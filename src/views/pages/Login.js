@@ -22,22 +22,49 @@ const Login = ({ setIsAuthenticated }) => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const usersData = [
+    { id: 1, fullName: 'admin', username: 'admin', email: 'admin@example.com', status: true, dateCreated: '2024-06-17' },
+    { id: 2, fullName: 'Jane Smith', username: 'jane.smith', email: 'jane.smith@example.com', status: false, dateCreated: '2024-06-16' },
+    { id: 3, fullName: 'Alice Johnson', username: 'alice.johnson', email: 'alice.johnson@example.com', status: true, dateCreated: '2024-06-15' },
+    { id: 4, fullName: 'Bob Brown', username: 'bob.brown', email: 'bob.brown@example.com', status: false, dateCreated: '2024-06-14' },
+    { id: 5, fullName: 'Eve Wilson', username: 'eve.wilson', email: 'eve.wilson@example.com', status: true, dateCreated: '2024-06-13' },
+    { id: 6, fullName: 'Michael Davis', username: 'michael.davis', email: 'michael.davis@example.com', status: false, dateCreated: '2024-06-12' },
+    { id: 7, fullName: 'Sophia Garcia', username: 'sophia.garcia', email: 'sophia.garcia@example.com', status: true, dateCreated: '2024-06-11' },
+    { id: 8, fullName: 'David Rodriguez', username: 'david.rodriguez', email: 'david.rodriguez@example.com', status: false, dateCreated: '2024-06-10' },
+    { id: 9, fullName: 'Olivia Martinez', username: 'olivia.martinez', email: 'olivia.martinez@example.com', status: true, dateCreated: '2024-06-09' },
+    { id: 10, fullName: 'William Hernandez', username: 'william.hernandez', email: 'william.hernandez@example.com', status: false, dateCreated: '2024-06-08' },
+    { id: 11, fullName: 'Emma Lopez', username: 'emma.lopez', email: 'emma.lopez@example.com', status: true, dateCreated: '2024-06-07' },
+  ];
+
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Kiểm tra điều kiện validation
     if (!username.trim() || !password.trim()) {
       setError('Username and password are required.');
       return;
     }
 
-    // Giả lập logic đăng nhập
-    if (username === 'admin' && password === 'admin') {
-      setIsAuthenticated(true);
-      navigate('/dashboard');
-    } else {
-      setError('Tên đăng nhập hoặc mật khẩu không đúng!');
+    const user = usersData.find(user => user.username === username);
+
+    if (!user) {
+      setError('User not exists.');
+      return;
     }
+
+    if (!user.status) {
+      setError('User is pending.');
+      return;
+    }
+
+    if (password !== '123') { // Password cứng
+      setError('Password is incorrect.');
+      return;
+    }
+
+    // Nếu hợp lệ, thực hiện đăng nhập
+    localStorage.setItem('isAuthenticated', 'true');
+    setIsAuthenticated(true);
+    navigate('/dashboard');
   };
 
   return (

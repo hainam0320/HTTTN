@@ -21,7 +21,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Manage user',
+    name: 'User list',
     to: '/management/users',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
