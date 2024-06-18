@@ -21,7 +21,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Manage user',
+    name: 'User list',
     to: '/management/users',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   },
@@ -41,11 +41,6 @@ const _nav = [
     name: 'Statistic',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Login',
-        to: '/login',
-      },
       {
         component: CNavItem,
         name: 'Register',

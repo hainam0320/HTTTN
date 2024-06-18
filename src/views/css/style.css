@@ -1,0 +1,50 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+  }
+  
+  .col {
+    flex: 1 1 calc(33.333% - 20px);
+    margin: 10px;
+  }
+  
+  .widget-stats {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+  }
+  
+  .widget-stats .icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .widget-stats .value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .widget-stats .title {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .widget-stats .progress-bar {
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+  }
+  .pading-right-3 {
+    padding-right: 10px;
+  }
+  
