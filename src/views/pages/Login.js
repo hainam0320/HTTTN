@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   CButton,
@@ -36,28 +36,36 @@ const Login = ({ setIsAuthenticated }) => {
     { id: 11, fullName: 'Emma Lopez', username: 'emma.lopez', email: 'emma.lopez@example.com', status: true, dateCreated: '2024-06-07' },
   ];
 
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (isAuthenticated) {
+      setIsAuthenticated(true);
+      navigate('/dashboard');
+    }
+  }, [setIsAuthenticated, navigate]);
+
   const handleLogin = (e) => {
     e.preventDefault();
 
     if (!username.trim() || !password.trim()) {
-      setError('Username and password are required.');
+      setError('Username và password là bắt buộc.');
       return;
     }
 
     const user = usersData.find(user => user.username === username);
 
     if (!user) {
-      setError('User not exists.');
+      setError('User không tồn tại.');
       return;
     }
 
     if (!user.status) {
-      setError('User is pending.');
+      setError('User đang chờ duyệt.');
       return;
     }
 
-    if (password !== '123') { // Password cứng
-      setError('Password is incorrect.');
+    if (password !== '123') { // Password cố định
+      setError('Password không đúng.');
       return;
     }
 

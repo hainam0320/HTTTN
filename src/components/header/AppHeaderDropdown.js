@@ -1,33 +1,10 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-  CAvatar,
-  CDropdown,
-  CDropdownDivider,
-  CDropdownHeader,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-} from '@coreui/react'
-import {
-  cilAccountLogout,
-  cilShieldAlt,
-  cilUser,
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import React from 'react';
+import { CAvatar, CDropdown, CDropdownDivider, CDropdownHeader, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
+import { cilAccountLogout, cilShieldAlt, cilUser } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import avatar8 from './../../assets/images/avatars/8.jpg';
 
-const AppHeaderDropdown = () => {
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    // Logic xử lý logout (nếu cần), ví dụ như xóa token xác thực
-    // localStorage.removeItem('authToken');
-
-    // Chuyển hướng tới trang đăng nhập
-    navigate('/login')
-  }
-
+const AppHeaderDropdown = ({ handleLogout }) => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
@@ -35,11 +12,11 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
-        <CDropdownItem >
+        <CDropdownItem href="#">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem >
+        <CDropdownItem href="#">
           <CIcon icon={cilShieldAlt} className="me-2" />
           Change password
         </CDropdownItem>
@@ -50,7 +27,7 @@ const AppHeaderDropdown = () => {
         <CDropdownDivider />
       </CDropdownMenu>
     </CDropdown>
-  )
-}
+  );
+};
 
-export default AppHeaderDropdown
+export default AppHeaderDropdown;

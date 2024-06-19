@@ -17,7 +17,7 @@ import {
   Tooltip // Import Tooltip from reactstrap
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserTimes, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUserTimes, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import '../css/style.css';
 
 const UserList = () => {
@@ -66,7 +66,8 @@ const UserList = () => {
     setTotalPages(totalPagesCount);
   }, [searchKeyword, selectedStatus, users]);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     // Triggered when search form is submitted
     // Will cause useEffect above to update filteredUsers
   };
@@ -128,16 +129,16 @@ const UserList = () => {
       <Col>
         <Card>
           <CardHeader>
-            <FontAwesomeIcon icon="user" /> Danh sách người dùng
+            <FontAwesomeIcon icon={faUser} /> Danh sách người dùng
           </CardHeader>
           <CardBody>
-            <Form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
+            <Form onSubmit={handleSearch}>
               <FormGroup row>
-                <div className='col-6 d-flex align-items-center'>
+              <div className='col-6 d-flex align-items-center'>
                   <div >
                     <Label className="mb-0" for="keyword">Tìm kiếm</Label>
                   </div>
-                  
+
                   <Col className="pl-3" >
                     <Input
                       type="text"
@@ -152,7 +153,7 @@ const UserList = () => {
                   <div className='mr-3 pading-right-3'>
                   <Label className="mb-0" for="status">Trạng thái</Label>
                   </div>
-                  
+
                   <Col className="pl-3" sm="5">
                   <Input
                     type="select"
@@ -166,8 +167,6 @@ const UserList = () => {
                   </Input>
                 </Col>
                 </div>
-                
-                
               </FormGroup>
               <Button color="primary" type="submit">Tìm kiếm</Button>
             </Form>
@@ -188,22 +187,43 @@ const UserList = () => {
                   <tr key={user.id} className="text-center">
                     <td>{startIndex + index + 1}</td>
                     <td>{user.fullName}</td>
+
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.status ? 'Đã phê duyệt' : 'Chưa phê duyệt'}</td>
                     <td>{user.dateCreated}</td>
                     <td className="text-center">
                       {user.status ? (
-                        <Button color="danger" id={`tooltipUnapprove${user.id}`} onClick={() => unapproveItem(user.id)} onMouseEnter={() => toggleTooltip(`tooltipUnapprove${user.id}`)} onMouseLeave={() => toggleTooltip(`tooltipUnapprove${user.id}`)}>
+                        <Button
+                          color="danger"
+                          id={`tooltipUnapprove${user.id}`}
+                          onClick={() => unapproveItem(user.id)}
+                          onMouseEnter={() => toggleTooltip(`tooltipUnapprove${user.id}`)}
+                          onMouseLeave={() => toggleTooltip(`tooltipUnapprove${user.id}`)}
+                        >
                           <FontAwesomeIcon icon={faUserTimes} className="text-white" />
-                          <Tooltip target={`tooltipUnapprove${user.id}`} isOpen={tooltipOpen[`tooltipUnapprove${user.id}`]} toggle={() => toggleTooltip(`tooltipUnapprove${user.id}`)}>
+                          <Tooltip
+                            target={`tooltipUnapprove${user.id}`}
+                            isOpen={tooltipOpen[`tooltipUnapprove${user.id}`]}
+                            toggle={() => toggleTooltip(`tooltipUnapprove${user.id}`)}
+                          >
                             Bỏ phê duyệt
                           </Tooltip>
                         </Button>
                       ) : (
-                        <Button color="success" id={`tooltipApprove${user.id}`} onClick={() => approveItem(user.id)} onMouseEnter={() => toggleTooltip(`tooltipApprove${user.id}`)} onMouseLeave={() => toggleTooltip(`tooltipApprove${user.id}`)}>
+                        <Button
+                          color="success"
+                          id={`tooltipApprove${user.id}`}
+                          onClick={() => approveItem(user.id)}
+                          onMouseEnter={() => toggleTooltip(`tooltipApprove${user.id}`)}
+                          onMouseLeave={() => toggleTooltip(`tooltipApprove${user.id}`)}
+                        >
                           <FontAwesomeIcon icon={faUserPlus} className="text-white" />
-                          <Tooltip target={`tooltipApprove${user.id}`} isOpen={tooltipOpen[`tooltipApprove${user.id}`]} toggle={() => toggleTooltip(`tooltipApprove${user.id}`)}>
+                          <Tooltip
+                            target={`tooltipApprove${user.id}`}
+                            isOpen={tooltipOpen[`tooltipApprove${user.id}`]}
+                            toggle={() => toggleTooltip(`tooltipApprove${user.id}`)}
+                          >
                             Phê duyệt
                           </Tooltip>
                         </Button>
