@@ -16,6 +16,7 @@ const DefaultLayout = ({ handleLogout }) => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/management/users" element={<UserList />} />
             <Route path="/test" element={<ManageTestPage />} /> 
+            <Route path="/my-tests" element={<ManageTestPage />} /> 
           </Routes>
         </div>
         <AppFooter />
