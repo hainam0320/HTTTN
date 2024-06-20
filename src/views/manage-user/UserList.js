@@ -14,7 +14,7 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
-  Tooltip // Import Tooltip from reactstrap
+  Tooltip
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faUserTimes, faUserPlus } from '@fortawesome/free-solid-svg-icons';
@@ -27,49 +27,42 @@ const UserList = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [tooltipOpen, setTooltipOpen] = useState({}); // State for managing Tooltip visibility
+  const [tooltipOpen, setTooltipOpen] = useState({});
+
   const itemsPerPage = 10;
 
   useEffect(() => {
-    // Simulated data fetching (replace with actual API call)
-    const usersData = [
-      { id: 1, fullName: 'admin', username: 'admin', email: 'admin@example.com', status: true, dateCreated: '2024-06-17' },
-      { id: 2, fullName: 'Jane Smith', username: 'jane.smith', email: 'jane.smith@example.com', status: false, dateCreated: '2024-06-16' },
-      { id: 3, fullName: 'Alice Johnson', username: 'alice.johnson', email: 'alice.johnson@example.com', status: true, dateCreated: '2024-06-15' },
-      { id: 4, fullName: 'Bob Brown', username: 'bob.brown', email: 'bob.brown@example.com', status: false, dateCreated: '2024-06-14' },
-      { id: 5, fullName: 'Eve Wilson', username: 'eve.wilson', email: 'eve.wilson@example.com', status: true, dateCreated: '2024-06-13' },
-      { id: 6, fullName: 'Michael Davis', username: 'michael.davis', email: 'michael.davis@example.com', status: false, dateCreated: '2024-06-12' },
-      { id: 7, fullName: 'Sophia Garcia', username: 'sophia.garcia', email: 'sophia.garcia@example.com', status: true, dateCreated: '2024-06-11' },
-      { id: 8, fullName: 'David Rodriguez', username: 'david.rodriguez', email: 'david.rodriguez@example.com', status: false, dateCreated: '2024-06-10' },
-      { id: 9, fullName: 'Olivia Martinez', username: 'olivia.martinez', email: 'olivia.martinez@example.com', status: true, dateCreated: '2024-06-09' },
-      { id: 10, fullName: 'William Hernandez', username: 'william.hernandez', email: 'william.hernandez@example.com', status: false, dateCreated: '2024-06-08' },
-      { id: 11, fullName: 'Emma Lopez', username: 'emma.lopez', email: 'emma.lopez@example.com', status: true, dateCreated: '2024-06-07' },
-    ];
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:9999/users');
+        const data = await response.json();
+        setUsers(data);
+        setFilteredUsers(data);
 
-    setUsers(usersData);
-    setFilteredUsers(usersData); // Initialize filteredUsers with all users
+        const totalPagesCount = Math.ceil(data.length / itemsPerPage);
+        setTotalPages(totalPagesCount);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
 
-    const totalPagesCount = Math.ceil(usersData.length / itemsPerPage);
-    setTotalPages(totalPagesCount);
+    fetchUsers();
   }, []);
 
   useEffect(() => {
-    // Filter users based on searchKeyword and selectedStatus
     const filtered = users.filter(user =>
       user.fullName.toLowerCase().includes(searchKeyword.toLowerCase()) &&
       (selectedStatus === '' || user.status === (selectedStatus === 'true'))
     );
 
     setFilteredUsers(filtered);
-    setCurrentPage(1); // Reset to first page when filtering
+    setCurrentPage(1);
     const totalPagesCount = Math.ceil(filtered.length / itemsPerPage);
     setTotalPages(totalPagesCount);
   }, [searchKeyword, selectedStatus, users]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Triggered when search form is submitted
-    // Will cause useEffect above to update filteredUsers
   };
 
   const changePage = (pageNumber) => {
@@ -88,36 +81,33 @@ const UserList = () => {
     }
   };
 
-  const approveItem = (userId) => {
-    // Logic to approve user with id = userId
-    // For simulation, update status in users and filteredUsers
+  const updateUserStatus = (userId, status) => {
     const updatedUsers = users.map(user =>
-      user.id === userId ? { ...user, status: true } : user
+      user.id === userId ? { ...user, status } : user
     );
     setUsers(updatedUsers);
-    const updatedFilteredUsers = filteredUsers.map(user =>
-      user.id === userId ? { ...user, status: true } : user
+
+    const filtered = updatedUsers.filter(user =>
+      user.fullName.toLowerCase().includes(searchKeyword.toLowerCase()) &&
+      (selectedStatus === '' || user.status === (selectedStatus === 'true'))
     );
-    setFilteredUsers(updatedFilteredUsers);
+
+    setFilteredUsers(filtered);
+    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
+  };
+
+  const approveItem = (userId) => {
+    updateUserStatus(userId, true);
   };
 
   const unapproveItem = (userId) => {
-    // Logic to unapprove user with id = userId
-    // For simulation, update status in users and filteredUsers
-    const updatedUsers = users.map(user =>
-      user.id === userId ? { ...user, status: false } : user
-    );
-    setUsers(updatedUsers);
-    const updatedFilteredUsers = filteredUsers.map(user =>
-      user.id === userId ? { ...user, status: false } : user
-    );
-    setFilteredUsers(updatedFilteredUsers);
+    updateUserStatus(userId, false);
   };
 
-  const toggleTooltip = (tooltipId) => {
+  const toggleTooltip = (id) => {
     setTooltipOpen(prevState => ({
       ...prevState,
-      [tooltipId]: !prevState[tooltipId],
+      [id]: !prevState[id]
     }));
   };
 
@@ -134,12 +124,11 @@ const UserList = () => {
           <CardBody>
             <Form onSubmit={handleSearch}>
               <FormGroup row>
-              <div className='col-6 d-flex align-items-center'>
-                  <div >
+                <div className='col-6 d-flex align-items-center'>
+                  <div>
                     <Label className="mb-0" for="keyword">Tìm kiếm</Label>
                   </div>
-
-                  <Col className="pl-3" >
+                  <Col className="pl-3">
                     <Input
                       type="text"
                       id="keyword"
@@ -151,21 +140,20 @@ const UserList = () => {
                 </div>
                 <div className='col-6 d-flex align-items-center'>
                   <div className='mr-3 pading-right-3'>
-                  <Label className="mb-0" for="status">Trạng thái</Label>
+                    <Label className="mb-0" for="status">Trạng thái</Label>
                   </div>
-
                   <Col className="pl-3" sm="5">
-                  <Input
-                    type="select"
-                    id="status"
-                    value={selectedStatus}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
-                  >
-                    <option value="">Tất cả</option>
-                    <option value="true">Đã phê duyệt</option>
-                    <option value="false">Chưa phê duyệt</option>
-                  </Input>
-                </Col>
+                    <Input
+                      type="select"
+                      id="status"
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                      <option value="">Tất cả</option>
+                      <option value="true">Đã phê duyệt</option>
+                      <option value="false">Chưa phê duyệt</option>
+                    </Input>
+                  </Col>
                 </div>
               </FormGroup>
               <Button color="primary" type="submit">Tìm kiếm</Button>
@@ -187,46 +175,51 @@ const UserList = () => {
                   <tr key={user.id} className="text-center">
                     <td>{startIndex + index + 1}</td>
                     <td>{user.fullName}</td>
-
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.status ? 'Đã phê duyệt' : 'Chưa phê duyệt'}</td>
                     <td>{user.dateCreated}</td>
                     <td className="text-center">
                       {user.status ? (
-                        <Button
-                          color="danger"
-                          id={`tooltipUnapprove${user.id}`}
-                          onClick={() => unapproveItem(user.id)}
-                          onMouseEnter={() => toggleTooltip(`tooltipUnapprove${user.id}`)}
-                          onMouseLeave={() => toggleTooltip(`tooltipUnapprove${user.id}`)}
-                        >
-                          <FontAwesomeIcon icon={faUserTimes} className="text-white" />
-                          <Tooltip
-                            target={`tooltipUnapprove${user.id}`}
-                            isOpen={tooltipOpen[`tooltipUnapprove${user.id}`]}
-                            toggle={() => toggleTooltip(`tooltipUnapprove${user.id}`)}
+                        <>
+                          <Button
+                            id={`unapprove-${user.id}`}
+                            color="danger"
+                            onClick={() => unapproveItem(user.id)}
                           >
-                            Bỏ phê duyệt
-                          </Tooltip>
-                        </Button>
+                            <FontAwesomeIcon icon={faUserTimes} className="text-white" />
+                          </Button>
+                          {tooltipOpen[`unapprove-${user.id}`] && (
+                            <Tooltip
+                              placement="top"
+                              content='Đã phê duyệt'
+                              isOpen={tooltipOpen[`unapprove-${user.id}`]}
+                              target={`unapprove-${user.id}`}
+                              toggle={() => toggleTooltip(`unapprove-${user.id}`)}
+                            >                           
+                            </Tooltip>
+                          )}
+                        </>
                       ) : (
-                        <Button
-                          color="success"
-                          id={`tooltipApprove${user.id}`}
-                          onClick={() => approveItem(user.id)}
-                          onMouseEnter={() => toggleTooltip(`tooltipApprove${user.id}`)}
-                          onMouseLeave={() => toggleTooltip(`tooltipApprove${user.id}`)}
-                        >
-                          <FontAwesomeIcon icon={faUserPlus} className="text-white" />
-                          <Tooltip
-                            target={`tooltipApprove${user.id}`}
-                            isOpen={tooltipOpen[`tooltipApprove${user.id}`]}
-                            toggle={() => toggleTooltip(`tooltipApprove${user.id}`)}
+                        <>
+                          <Button
+                            id={`approve-${user.id}`}
+                            color="success"
+                            onClick={() => approveItem(user.id)}
                           >
-                            Phê duyệt
-                          </Tooltip>
-                        </Button>
+                            <FontAwesomeIcon icon={faUserPlus} className="text-white" />
+                          </Button>
+                          {tooltipOpen[`approve-${user.id}`] && (
+                            <Tooltip
+                              placement="top"
+                              content='Chưa phê duyệt'
+                              isOpen={tooltipOpen[`approve-${user.id}`]}
+                              target={`approve-${user.id}`}
+                              toggle={() => toggleTooltip(`approve-${user.id}`)}
+                            >
+                            </Tooltip>
+                          )}
+                        </>
                       )}
                     </td>
                   </tr>

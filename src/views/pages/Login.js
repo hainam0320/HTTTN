@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   CButton,
@@ -14,27 +15,14 @@ import {
   CRow,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilUser } from '@coreui/icons';
+import { cilUser, cilLockLocked } from '@coreui/icons';
 
 const Login = ({ setIsAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  const usersData = [
-    { id: 1, fullName: 'admin', username: 'admin', email: 'admin@example.com', status: true, dateCreated: '2024-06-17' },
-    { id: 2, fullName: 'Jane Smith', username: 'jane.smith', email: 'jane.smith@example.com', status: false, dateCreated: '2024-06-16' },
-    { id: 3, fullName: 'Alice Johnson', username: 'alice.johnson', email: 'alice.johnson@example.com', status: true, dateCreated: '2024-06-15' },
-    { id: 4, fullName: 'Bob Brown', username: 'bob.brown', email: 'bob.brown@example.com', status: false, dateCreated: '2024-06-14' },
-    { id: 5, fullName: 'Eve Wilson', username: 'eve.wilson', email: 'eve.wilson@example.com', status: true, dateCreated: '2024-06-13' },
-    { id: 6, fullName: 'Michael Davis', username: 'michael.davis', email: 'michael.davis@example.com', status: false, dateCreated: '2024-06-12' },
-    { id: 7, fullName: 'Sophia Garcia', username: 'sophia.garcia', email: 'sophia.garcia@example.com', status: true, dateCreated: '2024-06-11' },
-    { id: 8, fullName: 'David Rodriguez', username: 'david.rodriguez', email: 'david.rodriguez@example.com', status: false, dateCreated: '2024-06-10' },
-    { id: 9, fullName: 'Olivia Martinez', username: 'olivia.martinez', email: 'olivia.martinez@example.com', status: true, dateCreated: '2024-06-09' },
-    { id: 10, fullName: 'William Hernandez', username: 'william.hernandez', email: 'william.hernandez@example.com', status: false, dateCreated: '2024-06-08' },
-    { id: 11, fullName: 'Emma Lopez', username: 'emma.lopez', email: 'emma.lopez@example.com', status: true, dateCreated: '2024-06-07' },
-  ];
+  const [usersData, setUsersData] = useState([]);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -42,11 +30,24 @@ const Login = ({ setIsAuthenticated }) => {
       setIsAuthenticated(true);
       navigate('/dashboard');
     }
-  }, [setIsAuthenticated, navigate]);
+
+    // Fetch users data from json-server
+    axios.get('http://localhost:9999/users')
+      .then(response => {
+        if (response.data ) {
+          setUsersData(response.data);
+          console.log(response.data);
+        } else {
+          console.error('Invalid users data format:', response.data);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching users data:', error);
+      });
+    }, [setIsAuthenticated, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     if (!username.trim() || !password.trim()) {
       setError('Username và password là bắt buộc.');
       return;
@@ -64,7 +65,8 @@ const Login = ({ setIsAuthenticated }) => {
       return;
     }
 
-    if (password !== '123') { // Password cố định
+    // Check password
+    if (password !== user.password) { // Compare plain text password
       setError('Password không đúng.');
       return;
     }
@@ -133,10 +135,8 @@ const Login = ({ setIsAuthenticated }) => {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                       tempor incididunt ut labore et dolore magna aliqua.
                     </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
-                      </CButton>
+                    <Link to="/register" className="btn btn-primary mt-3" tabIndex={-1}>
+                      Register Now!
                     </Link>
                   </div>
                 </CCardBody>

@@ -1,0 +1,58 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "fullName": "admin",
+      "username": "admin",
+      "email": "admin@example.com",
+      "status": true,
+      "dateCreated": "2024-06-17",
+      "password": "123"
+    },
+    {
+      "id": 2,
+      "fullName": "user",
+      "username": "user",
+      "email": "user@example.com",
+      "status": true,
+      "dateCreated": "2024-06-16",
+      "password": "456"
+    },
+    {
+      "id": 3,
+      "fullName": "user2",
+      "username": "user2",
+      "email": "user@example.com",
+      "status": false,
+      "dateCreated": "2024-06-16",
+      "password": "456"
+    },
+    {
+      "id": 4,
+      "fullName": "user3",
+      "username": "user3",
+      "email": "user@example.com",
+      "status": false,
+      "dateCreated": "2024-06-16",
+      "password": "456"
+    },
+    {
+      "id": 5,
+      "fullName": "hainam",
+      "username": "hainam",
+      "email": "hainam@gmail.com",
+      "status": true,
+      "dateCreated": "2024-06-20",
+      "password": "123"
+    },
+    {
+      "id": 6,
+      "fullName": "duyanh",
+      "username": "duyanh",
+      "email": "duyanh@gmail.com",
+      "status": true,
+      "dateCreated": "2024-06-20",
+      "password": "123"
+    }
+  ]
+}
