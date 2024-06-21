@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index';
-import ManageTestPage from '../views/test/TestPage'; 
+import { AppSidebar, AppFooter, AppHeader } from '../components/index';
+import ManageTestPage from '../views/test/TestPage';
 import UserList from '../views/manage-user/UserList';
 import Dashboard from '../views/dashboard/Dashboard';
+import AddTestPage from '../views/test/AddTestPage';
 
 const DefaultLayout = ({ handleLogout }) => {
   return (
@@ -15,8 +16,9 @@ const DefaultLayout = ({ handleLogout }) => {
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/management/users" element={<UserList />} />
-            <Route path="/test" element={<ManageTestPage />} /> 
-            <Route path="/my-tests" element={<ManageTestPage />} /> 
+            <Route path="/test" element={<ManageTestPage />} />
+            <Route path="/my-tests" element={<ManageTestPage />} />
+            <Route path="/test/create" element={<AddTestPage />} />
           </Routes>
         </div>
         <AppFooter />

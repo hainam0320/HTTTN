@@ -47,4 +47,6 @@
   .pading-right-3 {
     padding-right: 10px;
   }
-  
+  .fixed-width {
+    width: 270px;
+  }

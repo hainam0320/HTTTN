@@ -54,5 +54,39 @@
       "dateCreated": "2024-06-20",
       "password": "123"
     }
+  ],
+  "exams": [
+    {
+      "id": 1,
+      "name": "Hai Nam",
+      "count_question": "123",
+      "time_work": "123",
+      "time_start": "2024-06-21",
+      "time_end": "2024-06-22"
+    },
+    {
+      "id": 2,
+      "name": "Hai Nam",
+      "count_question": "123",
+      "time_work": "13123",
+      "time_start": "2024-06-21",
+      "time_end": "2024-06-29"
+    },
+    {
+      "id": 3,
+      "name": "Hai Nam3",
+      "count_question": "1231",
+      "time_work": "13123",
+      "time_start": "2024-06-21",
+      "time_end": "2024-06-23"
+    },
+    {
+      "id": 4,
+      "name": "Hai Nam4",
+      "count_question": "1231",
+      "time_work": "13123",
+      "time_start": "2024-06-21",
+      "time_end": "2024-06-26"
+    }
   ]
 }
