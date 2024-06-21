@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import {
     CNav,
@@ -25,7 +26,9 @@ import {
     CFormInput,
     CTooltip
 } from '@coreui/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import AddMemberModal from './add-member/AddMemberModal';
+import TestInformation from './DetailTestPage';
 
 const TestList = () => {
     const [tabPaneActiveKey, setTabPaneActiveKey] = useState(1);
@@ -33,21 +36,51 @@ const TestList = () => {
     const [myTests, setMyTests] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [currentTestId, setCurrentTestId] = useState(null);
+    const [currentTest, setCurrentTest] = useState(null); // State lưu trữ thông tin chi tiết của bài thi hiện tại
     const [modalDeleteTest, setModalDeleteTest] = useState(false);
+    const [currentTestId, setCurrentTestId] = useState(null); // State lưu trữ ID bài thi hiện tại
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 5;
     const navigate = useNavigate();
+    const location = useLocation();
 
     const changeTab = (key) => {
         setTabPaneActiveKey(key);
-        // Điều hướng đến đường dẫn tương ứng khi click vào tab
+        // Navigate to the corresponding path when clicking on tabs
         if (key === 1) {
-            navigate('/test'); // Đường dẫn tương ứng với tab 1
+            navigate('/test'); // Path for tab 1
         } else if (key === 2) {
-            navigate('/my-tests'); // Đường dẫn tương ứng với tab 2
+            navigate('/my-tests'); // Path for tab 2
         }
     };
+
+    useEffect(() => {
+        const fetchTests = async () => {
+            try {
+                const response = await axios.get('http://localhost:9999/exams');
+                setLstTestUser(response.data);
+            } catch (error) {
+                console.error('Error fetching test data:', error);
+            }
+        };
+
+        fetchTests();
+    }, []);
+
+    useEffect(() => {
+        if (location.state && location.state.refresh) {
+            const fetchMyTests = async () => {
+                try {
+                    const response = await axios.get('http://localhost:9999/my-exams'); 
+                    setMyTests(response.data);
+                } catch (error) {
+                    console.error('Error fetching my tests data:', error);
+                }
+            };
+
+            fetchMyTests();
+        }
+    }, [location.state]);
 
     const openAddMemberModal = (testId) => {
         setCurrentTestId(testId);
@@ -64,8 +97,8 @@ const TestList = () => {
     };
 
     const deleteTest = () => {
-        // delete test logic here
         setModalDeleteTest(false);
+        // Add your delete logic here
     };
 
     const prevPage = () => {
@@ -80,66 +113,19 @@ const TestList = () => {
         setCurrentPage(page);
     };
 
-    useEffect(() => {
-        // Dữ liệu cố định (mock data)
-        const mockData = [
-            {
-                id: 1,
-                name: 'Bài thi 1',
-                count_question: 10,
-                time_work: 30,
-                time_start: '2024-06-20T09:00:00',
-                time_end: '2024-06-20T12:00:00',
-                creator: 'Người tạo 1',
-                result: null,
-            },
-            {
-                id: 2,
-                name: 'Bài thi 2',
-                count_question: 15,
-                time_work: 45,
-                time_start: '2024-06-21T10:00:00',
-                time_end: '2024-06-21T13:00:00',
-                creator: 'Người tạo 2',
-                result: null,
-            },
-        ];
-
-        const myTestsData = [
-            {
-                id: 3,
-                name: 'Bài thi của tôi 1',
-                count_question: 20,
-                time_work: 60,
-                time_start: '2024-06-22T09:00:00',
-                time_end: '2024-06-22T12:00:00',
-                creator: 'Tôi',
-                result: 'A',
-            },
-            {
-                id: 4,
-                name: 'Bài thi của tôi 2',
-                count_question: 25,
-                time_work: 75,
-                time_start: '2024-06-23T10:00:00',
-                time_end: '2024-06-23T13:00:00',
-                creator: 'Tôi',
-                result: 'B',
-            },
-        ];
-
-        setLstTestUser(mockData);
-        setMyTests(myTestsData);
-    }, []);
-
     const filteredMyTests = myTests.filter((test) =>
         test.name.toLowerCase().includes(searchKeyword.toLowerCase())
     );
 
-    const paginatedTestList = lstTestUser.slice(
+    const paginatedMyTests = filteredMyTests.slice(
         (currentPage - 1) * 10,
         currentPage * 10
-    ); // example pagination logic
+    ); // Adjust pagination logic as per your requirements
+
+    const openTestDetailModal = (test) => {
+        setCurrentTest(test); // Lưu thông tin bài thi hiện tại vào state
+        setIsModalVisible(true);
+    };
 
     return (
         <div>
@@ -170,7 +156,7 @@ const TestList = () => {
                         <CRow>
                             {lstTestUser.map((test) => (
                                 <CCol key={test.id} xs="12" sm="12" md="6">
-                                    <CCallout color="success custom-callout">
+                                    <CCallout color="success custom-callout" onClick={() => openTestDetailModal(test)}>
                                         <div>
                                             <h4 className="text-uppercase">{test.name}</h4>
                                             <span>Số câu hỏi: {test.count_question}</span>
@@ -184,7 +170,10 @@ const TestList = () => {
                                                 new Date(test.time_end) > new Date() ? (
                                                     <CButton
                                                         color="primary"
-                                                        onClick={() => navigate(`/test/quiz/${test.id}/${test.count_question}/${test.time_work}`)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation(); // Ngăn chặn sự kiện click lan ra phần tử cha
+                                                            navigate(`/test/quiz/${test.id}/${test.count_question}/${test.time_work}`)
+                                                        }}
                                                     >
                                                         <i className="fas fa-book-reader"></i> Làm bài
                                                     </CButton>
@@ -196,7 +185,10 @@ const TestList = () => {
                                             ) : (
                                                 <CButton
                                                     color="success"
-                                                    onClick={() => navigate(`/test/quiz/result/${test.id}`)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Ngăn chặn sự kiện click lan ra phần tử cha
+                                                        navigate(`/test/quiz/result/${test.id}`)
+                                                    }}
                                                     className="text-white"
                                                 >
                                                     <i className="fas fa-check"></i> Hoàn thành
@@ -208,11 +200,19 @@ const TestList = () => {
                             ))}
                         </CRow>
                     </CContainer>
+                    {/* Ensure the modal is rendered only when currentTest is set */}
+          {currentTest && (
+            <TestInformation
+              visible={isModalVisible}
+              closeModal={closeModal}
+              test={currentTest}
+            />
+          )}
                 </CTabPane>
 
                 <CTabPane visible={tabPaneActiveKey === 2}>
                     <CContainer className="bg-white mb-3 custom-borders" fluid>
-                        <h3 className="text-center pt-3">DANH SÁCH BÀI THI</h3>
+                        <h3 className="text-center pt-3">DANH SÁCH BÀI THI CỦA TÔI</h3>
                         <hr />
                         <CRow className="align-items-end justify-content-end">
                             <CCol xs="12" md="4">
@@ -229,7 +229,7 @@ const TestList = () => {
                             </CCol>
                             <CCol xs="12" md="4" className="mt-md-0">
                                 <div className="d-flex justify-content-center">
-                                    <CButton color="primary" size="sm">Tìm kiếm</CButton>
+                                    <CButton color="primary" >Tìm kiếm</CButton>
                                 </div>
                             </CCol>
                         </CRow>
@@ -258,67 +258,62 @@ const TestList = () => {
                                     </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
-                                    {filteredMyTests.map((test, index) => (
+                                    {lstTestUser.map((test, index) => (
                                         <CTableRow key={test.id} className="text-center">
-                                            <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                                            <CTableDataCell className="text-left">{test.name}</CTableDataCell>
-                                            <CTableDataCell>{test.count_question}</CTableDataCell>
-                                            <CTableDataCell>{test.time_work} phút</CTableDataCell>
-                                            <CTableDataCell>{new Date(test.time_start).toLocaleString()}</CTableDataCell>
-                                            <CTableDataCell>{new Date(test.time_end).toLocaleString()}</CTableDataCell>
-                                            <CTableDataCell className="d-flex justify-content-between">
-                                                <CTooltip content="Thêm thành viên" placement="top">
-                                                    <CButton
-                                                        color="primary"
-                                                        size="sm"
-                                                        onClick={() => openAddMemberModal(test.id)}
-                                                        className="text-white"
-                                                    >
-                                                        <i className="fas fa-user-plus"></i>
-                                                    </CButton>
-                                                </CTooltip>
-                                                <CTooltip content="Thêm câu hỏi" placement="top">
-                                                    <CButton
-                                                        color="info"
-                                                        size="sm"
-                                                        onClick={() => navigate(`/management/questions/create/${test.id}`)}
-                                                        className="text-white"
-                                                    >
-                                                        <i className="fas fa-book-medical"></i>
-                                                    </CButton>
-                                                </CTooltip>
-                                                <CTooltip content="Xem" placement="top">
-                                                    <CButton
-                                                        color="success"
-                                                        size="sm"
-                                                        onClick={() => navigate(`/test/detail/${test.id}`)}
-                                                        className="text-white"
-                                                    >
-                                                        <i className="far fa-eye"></i>
-                                                    </CButton>
-                                                </CTooltip>
-                                                <CTooltip content="Sửa" placement="top">
-                                                    <CButton
-                                                        color="warning"
-                                                        size="sm"
-                                                        onClick={() => navigate(`/test/edit/${test.id}`)}
-                                                        className="text-white"
-                                                    >
-                                                        <i className="far fa-edit"></i>
-                                                    </CButton>
-                                                </CTooltip>
-                                                <CTooltip content="Xóa" placement="top">
-                                                    <CButton
-                                                        color="danger"
-                                                        size="sm"
-                                                        onClick={() => openDeleteModal(test.id)}
-                                                        className="text-white"
-                                                    >
-                                                        <i className="far fa-trash-alt"></i>
-                                                    </CButton>
-                                                </CTooltip>
-                                            </CTableDataCell>
-                                        </CTableRow>
+                                        <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                                        <CTableDataCell className="text-left">{test.name}</CTableDataCell>
+                                        <CTableDataCell>{test.count_question}</CTableDataCell>
+                                        <CTableDataCell>{test.time_work} phút</CTableDataCell>
+                                        <CTableDataCell>{new Date(test.time_start).toLocaleString()}</CTableDataCell>
+                                        <CTableDataCell>{new Date(test.time_end).toLocaleString()}</CTableDataCell>
+                                        <CTableDataCell className="d-flex justify-content-between">
+                                            <CTooltip content="Thêm thành viên" placement="top">
+                                                <CButton
+                                                    color="primary"
+                                                    onClick={() => openAddMemberModal(test.id)}
+                                                    className="text-white"
+                                                >
+                                                    <i className="fas fa-user-plus"></i>
+                                                </CButton>
+                                            </CTooltip>
+                                            <CTooltip content="Thêm câu hỏi" placement="top">
+                                                <CButton
+                                                    color="info"
+                                                    onClick={() => navigate(`/management/questions/create/${test.id}`)}
+                                                    className="text-white"
+                                                >
+                                                    <i className="fas fa-book-medical"></i>
+                                                </CButton>
+                                            </CTooltip>
+                                            <CTooltip content="Xem" placement="top">
+                                                <CButton
+                                                    color="success"
+                                                    onClick={() => openTestDetailModal(test.id)}
+                                                    className="text-white"
+                                                >
+                                                    <i className="far fa-eye"></i>
+                                                </CButton>
+                                            </CTooltip>
+                                            <CTooltip content="Sửa" placement="top">
+                                                <CButton
+                                                    color="warning"
+                                                    onClick={() => navigate(`/test/edit/${test.id}`)}
+                                                    className="text-white"
+                                                >
+                                                    <i className="far fa-edit"></i>
+                                                </CButton>
+                                            </CTooltip>
+                                            <CTooltip content="Xóa" placement="top">
+                                                <CButton
+                                                    color="danger"
+                                                    onClick={() => openDeleteModal(test.id)}
+                                                    className="text-white"
+                                                >
+                                                    <i className="far fa-trash-alt"></i>
+                                                </CButton>
+                                            </CTooltip>
+                                        </CTableDataCell>
+                                    </CTableRow>
                                     ))}
                                 </CTableBody>
                             </CTable>
@@ -350,7 +345,6 @@ const TestList = () => {
                                 </CModalFooter>
                             </CModal>
                         </div>
-
                         {/* Pagination */}
                         <CRow>
                             <CCol xs="12">
@@ -387,11 +381,49 @@ const TestList = () => {
                             </CCol>
                         </CRow>
                     </CContainer>
+                    {/* Ensure the modal is rendered only when currentTest is set */}
+          {currentTest && (
+            <TestInformation
+              visible={isModalVisible}
+              closeModal={closeModal}
+              test={currentTest}
+            />
+          )}
                 </CTabPane>
 
             </CTabContent>
+
+            {/* Add Member Modal */}
+            <AddMemberModal
+                visible={isModalVisible && !currentTest}
+                closeModal={closeModal}
+                testId={currentTestId}
+            />
+
+            {/* Delete Modal */}
+            <CModal
+                visible={modalDeleteTest}
+                onClose={() => setModalDeleteTest(false)}
+                aria-labelledby="DeleteTestModal"
+            >
+                <CModalHeader>
+                    <CModalTitle id="DeleteTestModal">Xác nhận xoá bài thi</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    Bạn có chắc chắn muốn xoá bài thi này không?
+                </CModalBody>
+                <CModalFooter>
+                    <CButton color="secondary" onClick={() => setModalDeleteTest(false)}>
+                        Đóng
+                    </CButton>
+                    <CButton color="danger" onClick={deleteTest}>
+                        Xoá
+                    </CButton>
+                </CModalFooter>
+            </CModal>
         </div>
     );
 };
 
 export default TestList;
+
