@@ -19,6 +19,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faUserTimes, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import '../css/style.css';
+import axios from 'axios';
 
 const UserList = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -81,27 +82,34 @@ const UserList = () => {
     }
   };
 
-  const updateUserStatus = (userId, status) => {
-    const updatedUsers = users.map(user =>
-      user.id === userId ? { ...user, status } : user
-    );
-    setUsers(updatedUsers);
-
-    const filtered = updatedUsers.filter(user =>
-      user.fullName.toLowerCase().includes(searchKeyword.toLowerCase()) &&
-      (selectedStatus === '' || user.status === (selectedStatus === 'true'))
-    );
-
-    setFilteredUsers(filtered);
-    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
+  const approveItem = (id) => {
+    axios.patch(`http://localhost:9999/users/${id}`, { status: true })
+      .then(response => {
+        console.log(`User with ID ${id} has been approved.`);
+        setUsers(prevUsers => {
+          return prevUsers.map(user => 
+            user.id === id ? { ...user, status: true } : user
+          );
+        });
+      })
+      .catch(error => {
+        console.error(`Error approving user with ID ${id}:`, error);
+      });
   };
 
-  const approveItem = (userId) => {
-    updateUserStatus(userId, true);
-  };
-
-  const unapproveItem = (userId) => {
-    updateUserStatus(userId, false);
+  const unapproveItem = (id) => {
+    axios.patch(`http://localhost:9999/users/${id}`, { status: false })
+      .then(response => {
+        console.log(`User with ID ${id} has been unapproved.`);
+        setUsers(prevUsers => {
+          return prevUsers.map(user => 
+            user.id === id ? { ...user, status: false } : user
+          );
+        });
+      })
+      .catch(error => {
+        console.error(`Error unapproving user with ID ${id}:`, error);
+      });
   };
 
   const toggleTooltip = (id) => {
