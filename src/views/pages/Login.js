@@ -132,8 +132,7 @@ const Login = ({ setIsAuthenticated }) => {
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                      Hãy đăng ký để đăng nhập được vào hệ thống của chúng tôi!
                     </p>
                     <Link to="/register" className="btn btn-primary mt-3" tabIndex={-1}>
                       Register Now!

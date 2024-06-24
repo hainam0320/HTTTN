@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import {
   CAlert,
   CContainer,
@@ -10,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const EditExam = () => {
+  const { id } = useParams();
   const [exam, setExam] = useState({
     name: '',
     count_question: 0,
@@ -19,8 +22,34 @@ const EditExam = () => {
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(true); // State to track loading status
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchExamDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9999/exams/${id}`);
+        const fetchedExam = response.data;
+
+        // Update exam state with fetched data
+        setExam({
+          name: fetchedExam.name || '',
+          count_question: fetchedExam.count_question || 0,
+          time_work: fetchedExam.time_work || 0,
+          time_start: fetchedExam.time_start || '',
+          time_end: fetchedExam.time_end || '',
+        });
+
+        setLoading(false); // Mark loading as complete
+      } catch (error) {
+        console.error('Error fetching exam details:', error);
+        setLoading(false); // Mark loading as complete even on error
+      }
+    };
+
+    fetchExamDetails();
+  }, [id]); // Run effect whenever id changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,6 +103,18 @@ const EditExam = () => {
       }, 2000);
     }
   };
+
+  if (loading) {
+    return (
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CAlert color="info">
+            Đang tải dữ liệu bài thi...
+          </CAlert>
+        </CRow>
+      </CContainer>
+    );
+  }
 
   return (
     <div>

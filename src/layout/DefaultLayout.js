@@ -5,7 +5,8 @@ import ManageTestPage from '../views/test/TestPage';
 import UserList from '../views/manage-user/UserList';
 import Dashboard from '../views/dashboard/Dashboard';
 import AddTestPage from '../views/test/AddTestPage';
-
+import DetailTestPage from '../views/test/DetailTestPage';
+import EditExam from '../views/test/EditTestPage';
 const DefaultLayout = ({ handleLogout }) => {
   return (
     <div>
@@ -19,6 +20,9 @@ const DefaultLayout = ({ handleLogout }) => {
             <Route path="/test" element={<ManageTestPage />} />
             <Route path="/my-tests" element={<ManageTestPage />} />
             <Route path="/test/create" element={<AddTestPage />} />
+            <Route path="/test/detail/:id" element={<DetailTestPage />} />
+            <Route path="/test/edit/:id" element={<EditExam />} />
+
           </Routes>
         </div>
         <AppFooter />

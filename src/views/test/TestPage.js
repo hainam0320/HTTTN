@@ -28,7 +28,7 @@ import {
 } from '@coreui/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AddMemberModal from './add-member/AddMemberModal';
-import TestInformation from './DetailTestPage';
+import TestDetailPage from './DetailTestPage';
 
 const TestList = () => {
     const [tabPaneActiveKey, setTabPaneActiveKey] = useState(1);
@@ -122,10 +122,7 @@ const TestList = () => {
         currentPage * 10
     ); // Adjust pagination logic as per your requirements
 
-    const openTestDetailModal = (test) => {
-        setCurrentTest(test); // Lưu thông tin bài thi hiện tại vào state
-        setIsModalVisible(true);
-    };
+   
 
     return (
         <div>
@@ -156,7 +153,7 @@ const TestList = () => {
                         <CRow>
                             {lstTestUser.map((test) => (
                                 <CCol key={test.id} xs="12" sm="12" md="6">
-                                    <CCallout color="success custom-callout" onClick={() => openTestDetailModal(test)}>
+                                    <CCallout color="success custom-callout">
                                         <div>
                                             <h4 className="text-uppercase">{test.name}</h4>
                                             <span>Số câu hỏi: {test.count_question}</span>
@@ -288,7 +285,7 @@ const TestList = () => {
                                             <CTooltip content="Xem" placement="top">
                                                 <CButton
                                                     color="success"
-                                                    onClick={() => openTestDetailModal(test.id)}
+                                                    onClick={() => navigate(`/test/detail/${test.id}`)}
                                                     className="text-white"
                                                 >
                                                     <i className="far fa-eye"></i>
@@ -383,7 +380,7 @@ const TestList = () => {
                     </CContainer>
                     {/* Ensure the modal is rendered only when currentTest is set */}
           {currentTest && (
-            <TestInformation
+            <TestDetailPage
               visible={isModalVisible}
               closeModal={closeModal}
               test={currentTest}

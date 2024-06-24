@@ -58,7 +58,7 @@ const Register = () => {
       });
       if (response.ok) {
         toast.success('Đăng ký thành công!');
-        setTimeout(() => navigate('/login'), 2000); // Chờ 2 giây sau khi hiển thị thông báo rồi chuyển hướng
+        setTimeout(() => navigate('/login'), 2000); 
       } else {
         toast.error('Đăng ký thất bại!');
       }

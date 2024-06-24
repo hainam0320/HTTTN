@@ -1,111 +1,105 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Button,
-  Modal
-} from 'react-bootstrap';
+  CContainer,
+  CRow,
+  CCol,
+  CWidgetStatsC,
+  CSpinner,
+} from '@coreui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestionCircle, faClock, faCalendarAlt, faUser } from '@fortawesome/free-solid-svg-icons'; 
 
-const TestInformation = ({ visible, closeModal, test }) => {
-  const handleClose = () => closeModal();
+const DetailTestPage = () => {
+  const { id } = useParams();
+  const [testDetails, setTestDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!test) {
-    return null;
+  useEffect(() => {
+    const fetchTestDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9999/exams/${id}`);
+        setTestDetails(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching test details:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchTestDetails();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CSpinner color="primary" />
+        </CRow>
+      </CContainer>
+    );
   }
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        Xem
-      </Button>
-
-      <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>THÔNG TIN BÀI THI</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Container className="border bg-white" fluid>
-            <h3 className="text-center mt-2">THÔNG TIN BÀI THI</h3>
-            <hr />
-            <Row className="mt-3">
-              <Col xs="6" sm="4" lg="3">
-                {/* Sử dụng WidgetStatsC và truyền các props tương ứng */}
-                <WidgetStatsC value={users.length > 0 ? users.length : 0} progress={{ color: 'info', value: 100 }}>
-                  <i className="fas fa-users" style={{ fontSize: '40px', color: 'blue' }}></i>
-                  <div>Số thành viên</div>
-                </WidgetStatsC>
-              </Col>
-              <Col xs="6" sm="4" lg="3">
-                <WidgetStatsC value={test.count_question} progress={{ color: 'info', value: 100 }}>
-                  <i className="far fa-question-circle" style={{ fontSize: '40px', color: 'green' }}></i>
-                  <div>Số lượng câu hỏi</div>
-                </WidgetStatsC>
-              </Col>
-              <Col xs="6" sm="4" lg="3">
-                <WidgetStatsC value={test.time_work} progress={{ color: 'info', value: 100 }}>
-                  <i className="far fa-clock" style={{ fontSize: '40px', color: 'deepskyblue' }}></i>
-                  <div>Thời gian làm</div>
-                </WidgetStatsC>
-              </Col>
-              <Col xs="6" sm="4" lg="3">
-                <WidgetStatsC value={test.time_start} progress={{ color: 'info', value: 100 }}>
-                  <i className="fas fa-hourglass-start" style={{ fontSize: '40px', color: 'chocolate' }}></i>
-                  <div>Thời gian bắt đầu</div>
-                </WidgetStatsC>
-              </Col>
-              <Col xs="6" sm="4" lg="3">
-                <WidgetStatsC value={test.time_end} progress={{ color: 'info', value: 100 }}>
-                  <i className="fa fa-hourglass-end" style={{ fontSize: '36px', color: 'red' }}></i>
-                  <div>Thời gian kết thúc</div>
-                </WidgetStatsC>
-              </Col>
-            </Row>
-            <hr />
-            <Row className="mt-3 mb-3">
-              <Col xs={12} sm={6}>
-                <h4>DANH SÁCH THÀNH VIÊN</h4>
-                <ListGroup>
-                  {users.map((user, index) => (
-                    <ListGroupItem key={index}>
-                      {/* Kiểm tra user và user.fullName trước khi hiển thị */}
-                      {user.user && <b>{user.user.fullName}</b>}
-                    </ListGroupItem>
-                  ))}
-                </ListGroup>
-              </Col>
-              <Col xs={12} sm={6}>
-                <h4 className="mobile-margin-top">DANH SÁCH HOÀN THÀNH</h4>
-                <ListGroup>
-                  {users.map((user, index) => (
-                    user.result != null && (
-                      <ListGroupItem key={index}>
-                        {/* Kiểm tra user và user.user trước khi hiển thị */}
-                        {user.user && (
-                          <>
-                            <b>{user.user.fullName}</b> - Kết quả thi: {user.result} - Thời gian làm: {user.user.time_work_display}
-                          </>
-                        )}
-                      </ListGroupItem>
-                    )
-                  ))}
-                </ListGroup>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Đóng
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <CContainer>
+      {testDetails ? (
+        <CRow>
+          <CCol xs={4}>
+            <CWidgetStatsC
+              className="mb-3"
+              icon={<FontAwesomeIcon icon={faQuestionCircle} className="icon-green" size="lg" />}
+              progress={{ color: 'success', value: 75 }}
+              title="Số câu hỏi"
+              value={testDetails.count_question}
+            />
+          </CCol>
+          <CCol xs={4}>
+            <CWidgetStatsC
+              className="mb-3"
+              icon={<FontAwesomeIcon icon={faClock} className="icon-blue" size="lg" />}
+              progress={{ value: 75 }}
+              title="Thời gian làm bài"
+              value={`${testDetails.time_work} phút`}
+            />
+          </CCol>
+          <CCol xs={4}>
+            <CWidgetStatsC
+              className="mb-3"
+              icon={<FontAwesomeIcon icon={faCalendarAlt} className="icon-orange" size="lg" />}
+              progress={{ value: 75 }}
+              title="Thời gian bắt đầu"
+              value={new Date(testDetails.time_start).toLocaleString()}
+            />
+          </CCol>
+          <CCol xs={4}>
+            <CWidgetStatsC
+              className="mb-3"
+              icon={<FontAwesomeIcon icon={faCalendarAlt} className="icon-red" size="lg" />}
+              progress={{ value: 75 }}
+              title="Thời gian kết thúc"
+              value={new Date(testDetails.time_end).toLocaleString()}
+            />
+          </CCol>
+          <CCol xs={4}>
+            <CWidgetStatsC
+              className="mb-3"
+              icon={<FontAwesomeIcon icon={faUser} className="icon-blue" size="lg" />}
+              progress={{ value: 75 }}
+              title="Người giao bài"
+              value="admin"
+            />
+          </CCol>
+        </CRow>
+      ) : (
+        <CRow>
+          <CCol xs="12">
+            <p>Không tìm thấy thông tin chi tiết của bài thi.</p>
+          </CCol>
+        </CRow>
+      )}
+    </CContainer>
   );
 };
 
-export default TestInformation;
-
-
+export default DetailTestPage;
