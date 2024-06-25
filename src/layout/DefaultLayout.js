@@ -7,6 +7,8 @@ import Dashboard from '../views/dashboard/Dashboard';
 import AddTestPage from '../views/test/AddTestPage';
 import DetailTestPage from '../views/test/DetailTestPage';
 import EditExam from '../views/test/EditTestPage';
+import QuizView from '../views/quiz/Quizview';
+import AddQuestion from '../views/manage-question/AddQuestion';
 const DefaultLayout = ({ handleLogout }) => {
   return (
     <div>
@@ -22,6 +24,8 @@ const DefaultLayout = ({ handleLogout }) => {
             <Route path="/test/create" element={<AddTestPage />} />
             <Route path="/test/detail/:id" element={<DetailTestPage />} />
             <Route path="/test/edit/:id" element={<EditExam />} />
+            <Route path="/quiz/view/:id" element={<QuizView />} />
+            <Route path="/quiz/create/:id" element={<AddQuestion />} />
 
           </Routes>
         </div>
