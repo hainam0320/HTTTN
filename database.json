@@ -5,6 +5,7 @@
       "fullName": "admin",
       "username": "admin",
       "email": "admin@example.com",
+      "telephone":"0123456789",
       "status": true,
       "dateCreated": "2024-06-17",
       "password": "123"

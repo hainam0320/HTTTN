@@ -1,10 +1,25 @@
 import React from 'react';
-import { CAvatar, CDropdown, CDropdownDivider, CDropdownHeader, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react';
+import { useNavigate } from 'react-router-dom';
+import {
+  CAvatar,
+  CDropdown,
+  CDropdownDivider,
+  CDropdownHeader,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle
+} from '@coreui/react';
 import { cilAccountLogout, cilShieldAlt, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import avatar8 from './../../assets/images/avatars/8.jpg';
 
 const AppHeaderDropdown = ({ handleLogout }) => {
+  const navigate = useNavigate();
+
+  const navigateToProfile = () => {
+    navigate('/profile');
+  };
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
@@ -12,7 +27,7 @@ const AppHeaderDropdown = ({ handleLogout }) => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem onClick={navigateToProfile}>
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
