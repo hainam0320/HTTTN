@@ -22,7 +22,7 @@ const EditExam = () => {
   });
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(true); // State to track loading status
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -32,7 +32,6 @@ const EditExam = () => {
         const response = await axios.get(`http://localhost:9999/exams/${id}`);
         const fetchedExam = response.data;
 
-        // Update exam state with fetched data
         setExam({
           name: fetchedExam.name || '',
           count_question: fetchedExam.count_question || 0,
@@ -41,15 +40,15 @@ const EditExam = () => {
           time_end: fetchedExam.time_end || '',
         });
 
-        setLoading(false); // Mark loading as complete
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching exam details:', error);
-        setLoading(false); // Mark loading as complete even on error
+        setLoading(false);
       }
     };
 
     fetchExamDetails();
-  }, [id]); // Run effect whenever id changes
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,15 +91,18 @@ const EditExam = () => {
     return isValid;
   };
 
-  const submitExam = () => {
+  const submitExam = async () => {
     if (validate()) {
-      // Assume you would submit exam data here, e.g., send to server
-      // For demonstration, just show a success message
-      setMessage('Bài thi đã được cập nhật thành công');
-      // Redirect to test page after a short delay
-      setTimeout(() => {
-        navigate('/test');
-      }, 2000);
+      try {
+        await axios.put(`http://localhost:9999/exams/${id}`, exam);
+        setMessage('Bài thi đã được cập nhật thành công');
+        setTimeout(() => {
+          navigate('/test');
+        }, 2000);
+      } catch (error) {
+        console.error('Error updating exam:', error);
+        setMessage('Có lỗi xảy ra khi cập nhật bài thi');
+      }
     }
   };
 
@@ -108,9 +110,7 @@ const EditExam = () => {
     return (
       <CContainer>
         <CRow className="justify-content-center">
-          <CAlert color="info">
-            Đang tải dữ liệu bài thi...
-          </CAlert>
+          <CAlert color="info">Đang tải dữ liệu bài thi...</CAlert>
         </CRow>
       </CContainer>
     );
@@ -119,7 +119,7 @@ const EditExam = () => {
   return (
     <div>
       {message && (
-        <CAlert color="success" className="d-flex align-items-center">
+        <CAlert color={message.includes('thành công') ? 'success' : 'danger'} className="d-flex align-items-center">
           <i className="cil-check-circle flex-shrink-0 me-2" style={{ width: '24px', height: '24px' }} />
           <div>{message}</div>
         </CAlert>

@@ -20,6 +20,10 @@ const AppHeaderDropdown = ({ handleLogout }) => {
     navigate('/profile');
   };
 
+  const navigateToChangePassword = () => {
+    navigate('/change-password'); 
+  };
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
@@ -31,7 +35,7 @@ const AppHeaderDropdown = ({ handleLogout }) => {
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem href="#">
+        <CDropdownItem onClick={navigateToChangePassword}>
           <CIcon icon={cilShieldAlt} className="me-2" />
           Change password
         </CDropdownItem>

@@ -29,7 +29,7 @@ const QuizView = () => {
         
         // Set state with questions and exam details
         setQuestionList(questions);
-        setTimeLeft(examData.time_work * 60); // Assuming time_work is in minutes, converting to seconds
+        setTimeLeft(examData.time_work * 60); 
         setName(examData.name);
       } catch (error) {
         console.error('Error fetching data:', error);

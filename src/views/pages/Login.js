@@ -34,7 +34,7 @@ const Login = ({ setIsAuthenticated }) => {
     // Fetch users data from json-server
     axios.get('http://localhost:9999/users')
       .then(response => {
-        if (response.data ) {
+        if (response.data) {
           setUsersData(response.data);
           console.log(response.data);
         } else {
@@ -44,7 +44,7 @@ const Login = ({ setIsAuthenticated }) => {
       .catch(error => {
         console.error('Error fetching users data:', error);
       });
-    }, [setIsAuthenticated, navigate]);
+  }, [setIsAuthenticated, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -73,6 +73,7 @@ const Login = ({ setIsAuthenticated }) => {
 
     // Nếu hợp lệ, thực hiện đăng nhập
     localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('loggedInUserId', user.id); // Lưu ID người dùng vào localStorage
     setIsAuthenticated(true);
     navigate('/dashboard');
   };
