@@ -73,4 +73,254 @@
     margin-right: 10px;
     color: red;
 }
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+.profile-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.profile-picture {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.profile-details {
+  margin-bottom: 20px;
+}
+
+.profile-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile-item label {
+  font-weight: bold;
+  color: #555;
+}
+
+.profile-item span {
+  color: #333;
+}
+
+.edit-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.modal.is-active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.edit-form {
+  text-align: left;
+}
+
+.edit-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.preview-image {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.preview-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.form-buttons button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+.form-buttons button[type="button"]:hover {
+  background-color: #c82333;
+}
+/* Đặt kiểu cho container */
+.change-password-container {
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Đặt kiểu cho tiêu đề */
+h3.text-center {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Đặt kiểu cho form */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Đặt kiểu cho các input field */
+input[type="password"] {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+/* Đặt kiểu cho input field khi được focus */
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Đặt kiểu cho thông báo lỗi */
+.text-danger {
+  color: #e74c3c;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* Đặt kiểu cho nút bấm */
+.text-center.mt-4 {
+  display: flex;
+  justify-content: center;
+}
+
+/* Đặt kiểu cho nút submit */
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Đặt kiểu cho nút submit khi hover */
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Đặt kiểu cho nút submit khi bị disable */
+button[type="submit"]:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Đặt kiểu cho alert */
+.alert {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+/* Đặt kiểu cho alert success */
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* Đặt kiểu cho alert danger */
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}

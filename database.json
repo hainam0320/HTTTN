@@ -5,7 +5,7 @@
       "fullName": "admin",
       "username": "admin",
       "email": "admin@example.com",
-      "telephone":"0123456789",
+      "telephone": "0123456789",
       "status": true,
       "dateCreated": "2024-06-17",
       "password": "123"
@@ -396,6 +396,31 @@
         {
           "id": "D",
           "content": "trt"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "",
+      "test_id": "2",
+      "name": "ai là người đặt tên cho dòng sông",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
         }
       ],
       "correct_choice_id": "A"

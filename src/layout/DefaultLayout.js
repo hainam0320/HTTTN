@@ -9,7 +9,8 @@ import DetailTestPage from '../views/test/DetailTestPage';
 import EditExam from '../views/test/EditTestPage';
 import QuizView from '../views/quiz/Quizview';
 import AddQuestion from '../views/manage-question/AddQuestion';
-import Profile from '../views/pages/Profile';
+import UserProfile from '../views/pages/Profile';
+import ChangePassword from '../views/pages/ChangePassword';
 const DefaultLayout = ({ handleLogout }) => {
   return (
     <div>
@@ -27,7 +28,8 @@ const DefaultLayout = ({ handleLogout }) => {
             <Route path="/test/edit/:id" element={<EditExam />} />
             <Route path="/quiz/view/:id" element={<QuizView />} />
             <Route path="/quiz/create/:id" element={<AddQuestion />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/change-password" element={<ChangePassword />} />
 
           </Routes>
         </div>
