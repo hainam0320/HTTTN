@@ -24,6 +24,8 @@ const AddQuestion = () => {
     const { id } = useParams();
     const [questions, setQuestions] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [questionToDelete, setQuestionToDelete] = useState(null);
 
     const initialQuestion = {
         id: '',
@@ -83,9 +85,41 @@ const AddQuestion = () => {
             setQuestions([...questions, response.data]);
             setNewQuestion(initialQuestion);
             setIsModalVisible(false);
+
+            // Update count_question in the corresponding exam
+            await updateExamQuestionCount();
         } catch (error) {
             console.error('Error adding question:', error);
         }
+    };
+
+    const deleteQuestion = async () => {
+        try {
+            await axios.delete(`http://localhost:9999/questions/${questionToDelete}`);
+            setQuestions(questions.filter(question => question.id !== questionToDelete));
+            setIsDeleteModalVisible(false);
+            setQuestionToDelete(null);
+
+            // Update count_question in the corresponding exam
+            await updateExamQuestionCount();
+        } catch (error) {
+            console.error('Error deleting question:', error);
+        }
+    };
+
+    const updateExamQuestionCount = async () => {
+        try {
+            const questionsResponse = await axios.get(`http://localhost:9999/questions?test_id=${id}`);
+            const countQuestion = questionsResponse.data.length;
+            await axios.patch(`http://localhost:9999/exams/${id}`, { count_question: countQuestion });
+        } catch (error) {
+            console.error('Error updating exam question count:', error);
+        }
+    };
+
+    const confirmDeleteQuestion = (questionId) => {
+        setQuestionToDelete(questionId);
+        setIsDeleteModalVisible(true);
     };
 
     return (
@@ -114,6 +148,7 @@ const AddQuestion = () => {
                             <CTableHeaderCell scope="col">Đáp án C</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Đáp án D</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Đáp án đúng</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Hành động</CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
@@ -134,6 +169,11 @@ const AddQuestion = () => {
                                     {question.choices && question.choices.length > 3 ? question.choices[3].content : ''}
                                 </CTableDataCell>
                                 <CTableDataCell>{question.correct_choice_id}</CTableDataCell>
+                                <CTableDataCell>
+                                    <CButton color="danger" onClick={() => confirmDeleteQuestion(question.id)}>
+                                        Xóa
+                                    </CButton>
+                                </CTableDataCell>
                             </CTableRow>
                         ))}
                     </CTableBody>
@@ -143,7 +183,6 @@ const AddQuestion = () => {
             <CModal
                 visible={isModalVisible}
                 onClose={() => setIsModalVisible(false)}
-                size="lg"
             >
                 <CModalHeader closeButton>
                     <CModalTitle>Thêm Câu Hỏi Mới</CModalTitle>
@@ -200,10 +239,31 @@ const AddQuestion = () => {
                 </CModalBody>
                 <CModalFooter>
                     <CButton color="secondary" onClick={() => setIsModalVisible(false)}>
-                        Đóng
+                        Hủy
                     </CButton>
                     <CButton color="primary" onClick={addQuestion}>
                         Thêm Câu Hỏi
+                    </CButton>
+                </CModalFooter>
+            </CModal>
+
+            {/* Delete Question Modal */}
+            <CModal
+                visible={isDeleteModalVisible}
+                onClose={() => setIsDeleteModalVisible(false)}
+            >
+                <CModalHeader closeButton>
+                    <CModalTitle>Xác Nhận Xóa Câu Hỏi</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    Bạn có chắc chắn muốn xóa câu hỏi này?
+                </CModalBody>
+                <CModalFooter>
+                    <CButton color="secondary" onClick={() => setIsDeleteModalVisible(false)}>
+                        Hủy
+                    </CButton>
+                    <CButton color="danger" onClick={deleteQuestion}>
+                        Xóa
                     </CButton>
                 </CModalFooter>
             </CModal>

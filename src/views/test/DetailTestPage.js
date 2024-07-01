@@ -9,21 +9,31 @@ import {
   CSpinner,
 } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle, faClock, faCalendarAlt, faUser } from '@fortawesome/free-solid-svg-icons'; 
+import { faQuestionCircle, faClock, faCalendarAlt, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 const DetailTestPage = () => {
   const { id } = useParams();
   const [testDetails, setTestDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [memberCount, setMemberCount] = useState(0);
 
   useEffect(() => {
     const fetchTestDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:9999/exams/${id}`);
-        setTestDetails(response.data);
+        const [testResponse, membersResponse] = await Promise.all([
+          axios.get(`http://localhost:9999/exams/${id}`),
+          axios.get(`http://localhost:9999/user_exam?id_exam=${id}`)
+        ]);
+
+        setTestDetails(testResponse.data);
+
+        // Đếm tổng số lượng thành viên từ các bản ghi `user_exam`
+        const totalMembers = membersResponse.data.reduce((acc, userExam) => acc + userExam.id_user.length, 0);
+        setMemberCount(totalMembers);
+
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching test details:', error);
+        console.error('Lỗi khi lấy chi tiết bài thi hoặc thành viên:', error);
         setLoading(false);
       }
     };
@@ -88,6 +98,15 @@ const DetailTestPage = () => {
               progress={{ value: 75 }}
               title="Người giao bài"
               value="admin"
+            />
+          </CCol>
+          <CCol xs={4}>
+            <CWidgetStatsC
+              className="mb-3"
+              icon={<FontAwesomeIcon icon={faUsers} className="icon-blue" size="lg" />}
+              progress={{ value: 75 }}
+              title="Số lượng thành viên"
+              value={memberCount}
             />
           </CCol>
         </CRow>

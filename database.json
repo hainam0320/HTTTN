@@ -51,7 +51,7 @@
       "fullName": "duyanh",
       "username": "duyanh",
       "email": "duyanh@gmail.com",
-      "status": true,
+      "status": false,
       "dateCreated": "2024-06-20",
       "password": "123"
     },
@@ -84,12 +84,12 @@
       "time_end": "2024-06-22"
     },
     {
-      "id": "2",
       "name": "Hai Nam",
-      "count_question": "10",
+      "count_question": 7,
       "time_work": "120",
       "time_start": "2024-06-21",
-      "time_end": "2024-06-29"
+      "time_end": "2024-07-06",
+      "id": "2"
     },
     {
       "id": "3",
@@ -114,14 +114,18 @@
       "time_work": "23",
       "time_start": "2024-06-24",
       "time_end": "2024-06-27"
-    },
+    }
+  ],
+  "user_exam": [
     {
-      "id": "6",
-      "name": "hehe",
-      "count_question": "12",
-      "time_work": "10",
-      "time_start": "2024-06-25",
-      "time_end": "2024-06-28"
+      "id": "1883",
+      "id_user": [
+        "1",
+        "4",
+        "6",
+        "3"
+      ],
+      "id_exam": "1"
     }
   ],
   "questions": [
@@ -378,24 +382,24 @@
     {
       "id": "",
       "test_id": "2",
-      "name": "Hai Nam",
+      "name": "ai là người đặt tên cho dòng sông",
       "file": "",
       "choices": [
         {
           "id": "A",
-          "content": "ggg"
+          "content": "1"
         },
         {
           "id": "B",
-          "content": "gg"
+          "content": "2"
         },
         {
           "id": "C",
-          "content": "tr"
+          "content": "3"
         },
         {
           "id": "D",
-          "content": "trt"
+          "content": "4"
         }
       ],
       "correct_choice_id": "A"
@@ -403,7 +407,7 @@
     {
       "id": "",
       "test_id": "2",
-      "name": "ai là người đặt tên cho dòng sông",
+      "name": "uuuu",
       "file": "",
       "choices": [
         {

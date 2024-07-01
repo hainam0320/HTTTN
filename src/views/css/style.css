@@ -271,7 +271,6 @@ input[type="password"]:focus {
 /* Đặt kiểu cho thông báo lỗi */
 .text-danger {
   color: #e74c3c;
-  margin-top: -10px;
   margin-bottom: 10px;
   font-size: 14px;
 }
