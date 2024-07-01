@@ -78,14 +78,14 @@
     {
       "id": "1",
       "name": "Hai Nam",
-      "count_question": "5",
+      "count_question": 1,
       "time_work": "60",
       "time_start": "2024-06-21",
       "time_end": "2024-06-22"
     },
     {
       "name": "Hai Nam",
-      "count_question": 7,
+      "count_question": 8,
       "time_work": "120",
       "time_start": "2024-06-21",
       "time_end": "2024-07-06",
@@ -94,7 +94,7 @@
     {
       "id": "3",
       "name": "Hai Nam3",
-      "count_question": "8",
+      "count_question": 2,
       "time_work": "90",
       "time_start": "2024-06-21",
       "time_end": "2024-06-23"
@@ -102,7 +102,7 @@
     {
       "id": "4",
       "name": "Hai Nam4",
-      "count_question": "7",
+      "count_question": 1,
       "time_work": "100",
       "time_start": "2024-06-21",
       "time_end": "2024-06-26"
@@ -110,7 +110,7 @@
     {
       "id": "5",
       "name": "uuuu",
-      "count_question": "12",
+      "count_question": 3,
       "time_work": "23",
       "time_start": "2024-06-24",
       "time_end": "2024-06-27"
@@ -428,6 +428,131 @@
         }
       ],
       "correct_choice_id": "A"
+    },
+    {
+      "id": "",
+      "test_id": "5",
+      "name": "Hai Nam",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "",
+      "test_id": "4",
+      "name": "Nguyễn Cảnh Thăng",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "",
+      "test_id": "3",
+      "name": "Nguyễn Cảnh Thăng",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "",
+      "test_id": "1",
+      "name": "Nguyễn Cảnh Thăng",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "",
+      "test_id": "2",
+      "name": "",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": ""
+        },
+        {
+          "id": "B",
+          "content": ""
+        },
+        {
+          "id": "C",
+          "content": ""
+        },
+        {
+          "id": "D",
+          "content": ""
+        }
+      ],
+      "correct_choice_id": ""
     }
   ],
   "user_anwser": [

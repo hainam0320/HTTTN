@@ -124,7 +124,7 @@ const AddQuestion = () => {
 
     return (
         <CContainer className="bg-white mb-3 custom-borders" fluid>
-            <h3 className="text-center pt-3">Thêm Câu Hỏi</h3>
+            <h3 className="text-center pt-3">THÊM CÂU HỎI</h3>
             <hr />
             <CRow className="mt-4">
                 <CCol xs="12" className="text-right">
@@ -133,7 +133,7 @@ const AddQuestion = () => {
                         className="text-white"
                         onClick={() => setIsModalVisible(true)}
                     >
-                        Thêm Câu Hỏi
+                        Thêm câu hỏi
                     </CButton>
                 </CCol>
             </CRow>
@@ -185,7 +185,7 @@ const AddQuestion = () => {
                 onClose={() => setIsModalVisible(false)}
             >
                 <CModalHeader closeButton>
-                    <CModalTitle>Thêm Câu Hỏi Mới</CModalTitle>
+                    <CModalTitle>Thêm câu hỏi mới</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CFormInput
@@ -242,7 +242,7 @@ const AddQuestion = () => {
                         Hủy
                     </CButton>
                     <CButton color="primary" onClick={addQuestion}>
-                        Thêm Câu Hỏi
+                        Thêm câu hỏi
                     </CButton>
                 </CModalFooter>
             </CModal>
@@ -253,7 +253,7 @@ const AddQuestion = () => {
                 onClose={() => setIsDeleteModalVisible(false)}
             >
                 <CModalHeader closeButton>
-                    <CModalTitle>Xác Nhận Xóa Câu Hỏi</CModalTitle>
+                    <CModalTitle>Xác nhận xóa câu h</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     Bạn có chắc chắn muốn xóa câu hỏi này?
