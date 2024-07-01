@@ -30,6 +30,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AddMemberModal from './add-member/AddMemberModal';
 import DetailTestPage from './DetailTestPage';
 import QuizView from '../quiz/Quizview';
+
 const TestList = () => {
     const [tabPaneActiveKey, setTabPaneActiveKey] = useState(1);
     const [lstTestUser, setLstTestUser] = useState([]);
@@ -40,6 +41,7 @@ const TestList = () => {
     const [modalDeleteTest, setModalDeleteTest] = useState(false);
     const [currentTestId, setCurrentTestId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedUsers, setSelectedUsers] = useState([]);
     const totalPages = 5;
     const navigate = useNavigate();
     const location = useLocation();
@@ -51,6 +53,30 @@ const TestList = () => {
             navigate('/test'); // Path for tab 1
         } else if (key === 2) {
             navigate('/my-tests'); // Path for tab 2
+        }
+    };
+
+    const addMembersToTest = async () => {
+        try {
+            const userIds = selectedUsers.map(user => user.value);
+            await axios.post('http://localhost:9999/user_exam', {
+                id_user: userIds,
+                id_exam: currentTestId
+            });
+            closeModal(); // Đóng modal sau khi thêm thành viên thành công
+            // Cập nhật lại danh sách bài thi (lstTestUser) sau khi thêm thành viên
+            const updatedTests = lstTestUser.map(test => {
+                if (test.id === currentTestId) {
+                    return {
+                        ...test,
+                        // Có thể cập nhật thêm thông tin nếu cần thiết
+                    };
+                }
+                return test;
+            });
+            setLstTestUser(updatedTests);
+        } catch (error) {
+            console.error('Error adding members to test:', error);
         }
     };
 
@@ -89,6 +115,7 @@ const TestList = () => {
 
     const closeModal = () => {
         setIsModalVisible(false);
+        setSelectedUsers([]);
     };
 
     const openDeleteModal = (testId) => {
@@ -96,9 +123,14 @@ const TestList = () => {
         setModalDeleteTest(true);
     };
 
-    const deleteTest = () => {
-        setModalDeleteTest(false);
-        // Add your delete logic here
+    const deleteTest = async () => {
+        try {
+            await axios.delete(`http://localhost:9999/exams/${currentTestId}`);
+            setLstTestUser(lstTestUser.filter(test => test.id !== currentTestId));
+            setModalDeleteTest(false);
+        } catch (error) {
+            console.error('Error deleting test:', error);
+        }
     };
 
     const prevPage = () => {
@@ -121,8 +153,6 @@ const TestList = () => {
         (currentPage - 1) * 10,
         currentPage * 10
     ); // Adjust pagination logic as per your requirements
-
-
 
     return (
         <div>
@@ -200,7 +230,7 @@ const TestList = () => {
                     </CContainer>
                     {/* Ensure the modal is rendered only when currentTest is set */}
                     {currentTest && (
-                        <TestDetailPage
+                        <DetailTestPage
                             visible={isModalVisible}
                             closeModal={closeModal}
                             test={currentTest}
@@ -315,33 +345,6 @@ const TestList = () => {
                                     ))}
                                 </CTableBody>
                             </CTable>
-                            {/* Modal */}
-                            <CModal
-                                visible={modalDeleteTest}
-                                onClose={() => setModalDeleteTest(false)}
-                                aria-labelledby="LiveDemoExampleLabel"
-                            >
-                                <CModalHeader closeButton>
-                                    <CModalTitle id="LiveDemoExampleLabel">Xóa bài thi</CModalTitle>
-                                </CModalHeader>
-                                <CModalBody>
-                                    Bạn có chắc chắn muốn xóa bài thi này không?
-                                </CModalBody>
-                                <CModalFooter>
-                                    <CButton
-                                        color="secondary"
-                                        onClick={() => setModalDeleteTest(false)}
-                                    >
-                                        Quay lại
-                                    </CButton>
-                                    <CButton
-                                        color="primary"
-                                        onClick={deleteTest}
-                                    >
-                                        Xác nhận
-                                    </CButton>
-                                </CModalFooter>
-                            </CModal>
                         </div>
                         {/* Pagination */}
                         <CRow>
@@ -388,7 +391,6 @@ const TestList = () => {
                         />
                     )}
                 </CTabPane>
-
             </CTabContent>
 
             {/* Add Member Modal */}
@@ -444,4 +446,3 @@ const TestList = () => {
 };
 
 export default TestList;
-

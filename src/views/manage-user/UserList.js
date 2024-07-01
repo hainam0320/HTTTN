@@ -164,7 +164,7 @@ const UserList = () => {
                   </Col>
                 </div>
               </FormGroup>
-              <Button color="primary" type="submit">Tìm kiếm</Button>
+              <Button style={{width: '100px'}} color="primary">Tìm kiếm</Button>
             </Form>
             <Table className="mt-4" bordered>
               <thead>
