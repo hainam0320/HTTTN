@@ -26,7 +26,7 @@ const AddQuestion = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
     const [questionToDelete, setQuestionToDelete] = useState(null);
-
+    
     const initialQuestion = {
         id: '',
         test_id: id,
@@ -81,7 +81,13 @@ const AddQuestion = () => {
 
     const addQuestion = async () => {
         try {
-            const response = await axios.post(`http://localhost:9999/questions`, newQuestion);
+            const lastQuestionId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) : 0;
+            const newQuestionId = (lastQuestionId + 1).toString();
+            const questionToAdd = {
+                ...newQuestion,
+                id: newQuestionId
+            };
+            const response = await axios.post(`http://localhost:9999/questions`, questionToAdd);
             setQuestions([...questions, response.data]);
             setNewQuestion(initialQuestion);
             setIsModalVisible(false);
@@ -124,7 +130,7 @@ const AddQuestion = () => {
 
     return (
         <CContainer className="bg-white mb-3 custom-borders" fluid>
-            <h3 className="text-center pt-3">THÊM CÂU HỎI</h3>
+            <h3 className="text-center pt-3">Thêm Câu Hỏi</h3>
             <hr />
             <CRow className="mt-4">
                 <CCol xs="12" className="text-right">
@@ -133,7 +139,7 @@ const AddQuestion = () => {
                         className="text-white"
                         onClick={() => setIsModalVisible(true)}
                     >
-                        Thêm câu hỏi
+                        Thêm Câu Hỏi
                     </CButton>
                 </CCol>
             </CRow>
@@ -183,9 +189,10 @@ const AddQuestion = () => {
             <CModal
                 visible={isModalVisible}
                 onClose={() => setIsModalVisible(false)}
+                size="lg"
             >
                 <CModalHeader closeButton>
-                    <CModalTitle>Thêm câu hỏi mới</CModalTitle>
+                    <CModalTitle>Thêm Câu Hỏi Mới</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CFormInput
@@ -242,7 +249,7 @@ const AddQuestion = () => {
                         Hủy
                     </CButton>
                     <CButton color="primary" onClick={addQuestion}>
-                        Thêm câu hỏi
+                        Thêm Câu Hỏi
                     </CButton>
                 </CModalFooter>
             </CModal>
@@ -253,7 +260,7 @@ const AddQuestion = () => {
                 onClose={() => setIsDeleteModalVisible(false)}
             >
                 <CModalHeader closeButton>
-                    <CModalTitle>Xác nhận xóa câu h</CModalTitle>
+                    <CModalTitle>Xác Nhận Xóa Câu Hỏi</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     Bạn có chắc chắn muốn xóa câu hỏi này?
