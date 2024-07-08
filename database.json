@@ -76,7 +76,7 @@
       "fullName": "newuser2",
       "username": "newuser2",
       "email": "newuser2@gmail.com",
-      "status": true,
+      "status": false,
       "dateCreated": "2024-06-22",
       "password": "123",
       "role": "user"
@@ -86,14 +86,16 @@
     {
       "id": "1",
       "name": "Hai Nam",
+      "id_user": "1",
       "count_question": 2,
       "time_work": "60",
       "time_start": "2024-06-21",
       "time_end": "2024-06-22"
     },
     {
-      "name": "Hai Nam",
+      "name": "Hai Nam Idol",
       "count_question": 5,
+      "id_user": "1",
       "time_work": "120",
       "time_start": "2024-06-21",
       "time_end": "2024-07-06",
@@ -101,6 +103,7 @@
     },
     {
       "id": "3",
+      "id_user": "1",
       "name": "Hai Nam3",
       "count_question": 3,
       "time_work": "90",
@@ -109,6 +112,7 @@
     },
     {
       "id": "4",
+      "id_user": "1",
       "name": "Hai Nam4",
       "count_question": 1,
       "time_work": "100",
@@ -117,6 +121,7 @@
     },
     {
       "id": "5",
+      "id_user": "2",
       "name": "uuuu",
       "count_question": 3,
       "time_work": "23",
@@ -127,20 +132,30 @@
   "user_exam": [
     {
       "id": "1883",
-      "id_user":  [
+      "id_user": [
         "1",
         "4",
         "6",
-        "3"
+        "3",
+        "2"
       ],
       "id_exam": "1"
     },
     {
       "id": "b0a5",
       "id_user": [
-        "5"
+        "5",
+        "1"
       ],
       "id_exam": "2"
+    },
+    {
+      "id": "65c2",
+      "id_user": [
+        "1",
+        "5"
+      ],
+      "id_exam": "3"
     }
   ],
   "questions": [

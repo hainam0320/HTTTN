@@ -11,6 +11,7 @@ import QuizView from '../views/quiz/Quizview';
 import AddQuestion from '../views/manage-question/AddQuestion';
 import UserProfile from '../views/pages/Profile';
 import ChangePassword from '../views/pages/ChangePassword';
+import StatisticsChart from '../views/dashboard/MainChart';
 const DefaultLayout = ({ handleLogout }) => {
   return (
     <div>
@@ -30,6 +31,7 @@ const DefaultLayout = ({ handleLogout }) => {
             <Route path="/quiz/create/:id" element={<AddQuestion />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/statistic" element={<StatisticsChart />} />
 
           </Routes>
         </div>

@@ -1,12 +1,17 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
+import React from 'react';
+import CIcon from '@coreui/icons-react';
 import {
   cilDrop,
   cilPencil,
   cilSpeedometer,
   cilStar,
-} from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+} from '@coreui/icons';
+import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react';
+
+const getLoggedInUserId = () => {
+  return localStorage.getItem('loggedInUserId');
+};
+const userId = getLoggedInUserId();
 
 const _nav = [
   {
@@ -19,7 +24,7 @@ const _nav = [
     component: CNavTitle,
     name: 'Management',
   },
-  {
+  userId === '1' && {
     component: CNavItem,
     name: 'User list',
     to: '/management/users',
@@ -35,7 +40,6 @@ const _nav = [
     component: CNavTitle,
     name: 'Report',
   },
-
   {
     component: CNavGroup,
     name: 'Statistic',
@@ -43,11 +47,11 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Register',
-        to: '/register',
+        name: 'Statistic',
+        to: '/statistic',
       },
     ],
   },
-]
+].filter(Boolean); // Loại bỏ các giá trị "false" khỏi mảng
 
-export default _nav
+export default _nav;

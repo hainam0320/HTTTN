@@ -30,7 +30,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AddMemberModal from './add-member/AddMemberModal';
 import DetailTestPage from './DetailTestPage';
 import QuizView from '../quiz/Quizview';
-
+const getLoggedInUserId = () => {
+    return localStorage.getItem('loggedInUserId'); 
+};
 const TestList = () => {
     const [tabPaneActiveKey, setTabPaneActiveKey] = useState(1);
     const [lstTestUser, setLstTestUser] = useState([]);
@@ -45,7 +47,10 @@ const TestList = () => {
     const totalPages = 5;
     const navigate = useNavigate();
     const location = useLocation();
-
+    const userId = getLoggedInUserId();
+    const [loggedInUserId, setLoggedInUserId] = useState("1"); // Giả sử ID của người dùng đang đăng nhập là "1"
+    const [userExams, setUserExams] = useState([]);
+    const [matchedExams, setMatchedExams] = useState([]);
     const changeTab = (key) => {
         setTabPaneActiveKey(key);
         // Navigate to the corresponding path when clicking on tabs
@@ -85,6 +90,18 @@ const TestList = () => {
             try {
                 const response = await axios.get('http://localhost:9999/exams');
                 setLstTestUser(response.data);
+                const lstExam = response.data;
+                const matched = [];
+                for (const itemExam of lstExam) {
+                    const response = await axios.get(`http://localhost:9999/user_exam?id_exam=${itemExam.id}`);
+                    response.data.forEach(item => {
+                        if (item.id_user.includes(userId)) {
+                            matched.push(itemExam);
+                        }
+                      }); 
+                }
+                setMatchedExams(matched);
+                console.log("Bài thi:",matched);
             } catch (error) {
                 console.error('Error fetching test data:', error);
             }
@@ -181,7 +198,7 @@ const TestList = () => {
                         <h3 className="text-center pt-3">DANH SÁCH BÀI THI CẦN LÀM</h3>
                         <hr />
                         <CRow>
-                            {lstTestUser.map((test) => (
+                            {matchedExams.map((test) => (
                                 <CCol key={test.id} xs="12" sm="12" md="6">
                                     <CCallout color="success custom-callout">
                                         <div>
