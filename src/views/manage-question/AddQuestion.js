@@ -26,7 +26,7 @@ const AddQuestion = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
     const [questionToDelete, setQuestionToDelete] = useState(null);
-
+    
     const initialQuestion = {
         id: '',
         test_id: id,
@@ -81,7 +81,13 @@ const AddQuestion = () => {
 
     const addQuestion = async () => {
         try {
-            const response = await axios.post(`http://localhost:9999/questions`, newQuestion);
+            const lastQuestionId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) : 0;
+            const newQuestionId = (lastQuestionId + 1).toString();
+            const questionToAdd = {
+                ...newQuestion,
+                id: newQuestionId
+            };
+            const response = await axios.post(`http://localhost:9999/questions`, questionToAdd);
             setQuestions([...questions, response.data]);
             setNewQuestion(initialQuestion);
             setIsModalVisible(false);
@@ -183,6 +189,7 @@ const AddQuestion = () => {
             <CModal
                 visible={isModalVisible}
                 onClose={() => setIsModalVisible(false)}
+                size="lg"
             >
                 <CModalHeader closeButton>
                     <CModalTitle>Thêm Câu Hỏi Mới</CModalTitle>

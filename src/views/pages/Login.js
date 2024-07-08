@@ -76,6 +76,7 @@ const Login = ({ setIsAuthenticated }) => {
     localStorage.setItem('loggedInUserId', user.id); // Lưu ID người dùng vào localStorage
     setIsAuthenticated(true);
     navigate('/dashboard');
+    window.location.reload();
   };
 
   return (

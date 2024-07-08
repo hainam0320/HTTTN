@@ -8,7 +8,8 @@
       "telephone": "0123456789",
       "status": true,
       "dateCreated": "2024-06-17",
-      "password": "123"
+      "password": "123",
+      "role": "admin"
     },
     {
       "id": "2",
@@ -17,7 +18,8 @@
       "email": "user@example.com",
       "status": true,
       "dateCreated": "2024-06-16",
-      "password": "456"
+      "password": "456",
+      "role": "user"
     },
     {
       "id": "3",
@@ -26,7 +28,8 @@
       "email": "user@example.com",
       "status": false,
       "dateCreated": "2024-06-16",
-      "password": "456"
+      "password": "456",
+      "role": "user"
     },
     {
       "id": "4",
@@ -35,16 +38,18 @@
       "email": "user@example.com",
       "status": false,
       "dateCreated": "2024-06-16",
-      "password": "456"
+      "password": "456",
+      "role": "user"
     },
     {
       "id": "5",
       "fullName": "hainam",
       "username": "hainam",
       "email": "hainam@gmail.com",
-      "status": false,
+      "status": true,
       "dateCreated": "2024-06-20",
-      "password": "123"
+      "password": "123",
+      "role": "user"
     },
     {
       "id": "6",
@@ -53,7 +58,8 @@
       "email": "duyanh@gmail.com",
       "status": false,
       "dateCreated": "2024-06-20",
-      "password": "123"
+      "password": "123",
+      "role": "user"
     },
     {
       "id": "7",
@@ -62,30 +68,34 @@
       "email": "newuser1@gmail.com",
       "status": true,
       "dateCreated": "2024-06-21",
-      "password": "123"
+      "password": "123",
+      "role": "user"
     },
     {
       "id": "8",
       "fullName": "newuser2",
       "username": "newuser2",
       "email": "newuser2@gmail.com",
-      "status": true,
+      "status": false,
       "dateCreated": "2024-06-22",
-      "password": "123"
+      "password": "123",
+      "role": "user"
     }
   ],
   "exams": [
     {
       "id": "1",
       "name": "Hai Nam",
-      "count_question": "5",
+      "id_user": "1",
+      "count_question": 2,
       "time_work": "60",
       "time_start": "2024-06-21",
       "time_end": "2024-06-22"
     },
     {
-      "name": "Hai Nam",
-      "count_question": 7,
+      "name": "Hai Nam Idol",
+      "count_question": 5,
+      "id_user": "1",
       "time_work": "120",
       "time_start": "2024-06-21",
       "time_end": "2024-07-06",
@@ -93,24 +103,27 @@
     },
     {
       "id": "3",
+      "id_user": "1",
       "name": "Hai Nam3",
-      "count_question": "8",
+      "count_question": 3,
       "time_work": "90",
       "time_start": "2024-06-21",
       "time_end": "2024-06-23"
     },
     {
       "id": "4",
+      "id_user": "1",
       "name": "Hai Nam4",
-      "count_question": "7",
+      "count_question": 1,
       "time_work": "100",
       "time_start": "2024-06-21",
       "time_end": "2024-06-26"
     },
     {
       "id": "5",
+      "id_user": "2",
       "name": "uuuu",
-      "count_question": "12",
+      "count_question": 3,
       "time_work": "23",
       "time_start": "2024-06-24",
       "time_end": "2024-06-27"
@@ -123,9 +136,26 @@
         "1",
         "4",
         "6",
-        "3"
+        "3",
+        "2"
       ],
       "id_exam": "1"
+    },
+    {
+      "id": "b0a5",
+      "id_user": [
+        "5",
+        "1"
+      ],
+      "id_exam": "2"
+    },
+    {
+      "id": "65c2",
+      "id_user": [
+        "1",
+        "5"
+      ],
+      "id_exam": "3"
     }
   ],
   "questions": [
@@ -230,31 +260,6 @@
       "correct_choice_id": "A"
     },
     {
-      "id": "5",
-      "test_id": "2",
-      "name": "Who invented the telephone?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "Thomas Edison"
-        },
-        {
-          "id": "B",
-          "content": "Alexander Graham Bell"
-        },
-        {
-          "id": "C",
-          "content": "Nikola Tesla"
-        },
-        {
-          "id": "D",
-          "content": "Guglielmo Marconi"
-        }
-      ],
-      "correct_choice_id": "B"
-    },
-    {
       "id": "6",
       "test_id": "2",
       "name": "What is the largest planet in our solar system?",
@@ -330,31 +335,6 @@
       "correct_choice_id": "A"
     },
     {
-      "id": "9",
-      "test_id": "2",
-      "name": "What is the chemical formula for water?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "H2O"
-        },
-        {
-          "id": "B",
-          "content": "CO2"
-        },
-        {
-          "id": "C",
-          "content": "H2SO4"
-        },
-        {
-          "id": "D",
-          "content": "NH3"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
       "id": "10",
       "test_id": "2",
       "name": "Who wrote 'To Kill a Mockingbird'?",
@@ -380,9 +360,9 @@
       "correct_choice_id": "A"
     },
     {
-      "id": "",
+      "id": "11",
       "test_id": "2",
-      "name": "ai là người đặt tên cho dòng sông",
+      "name": "Nguyễn Cảnh Thăng",
       "file": "",
       "choices": [
         {
@@ -405,9 +385,159 @@
       "correct_choice_id": "A"
     },
     {
-      "id": "",
+      "id": "12",
       "test_id": "2",
+      "name": "Nguyễn Cảnh Thăng 111",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "1",
+      "test_id": "1",
+      "name": "Nguyễn Cảnh Thăng 12",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "2",
+      "test_id": "1",
+      "name": "Nguyễn Cảnh Thăng 123",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "9",
+      "test_id": "3",
+      "name": "Nguyễn Cảnh Thăng 1234",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "10",
+      "test_id": "3",
+      "name": "Nguyễn Cảnh Thăng 12345",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "1",
+      "test_id": "4",
       "name": "uuuu",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1"
+        },
+        {
+          "id": "B",
+          "content": "2"
+        },
+        {
+          "id": "C",
+          "content": "3"
+        },
+        {
+          "id": "D",
+          "content": "4"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "3",
+      "test_id": "5",
+      "name": "Hai Nam",
       "file": "",
       "choices": [
         {

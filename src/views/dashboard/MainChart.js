@@ -1,133 +1,107 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react';
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Legend, Tooltip } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
 
-import { CChartLine } from '@coreui/react-chartjs'
-import { getStyle } from '@coreui/utils'
+ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Legend, Tooltip);
 
-const MainChart = () => {
-  const chartRef = useRef(null)
+const StatisticsChart = () => {
+  const [chartLoaded, setChartLoaded] = useState(true);
+  const [chartData, setChartData] = useState({
+    labels: ['Đã phê duyệt', 'Chưa phê duyệt'],
+    datasets: [
+      {
+        label: 'Members',
+        backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+        borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+        data: [0, 0], // Dynamic data
+      },
+    ],
+  });
+
+  const [completionChartData, setCompletionChartData] = useState({
+    labels: ['Đang thực hiện', 'Đã hết hạn'],
+    datasets: [
+      {
+        label: 'Exams',
+        backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+        data: [0, 0], // Dynamic data
+      },
+    ],
+  });
 
   useEffect(() => {
-    document.documentElement.addEventListener('ColorSchemeChange', () => {
-      if (chartRef.current) {
-        setTimeout(() => {
-          chartRef.current.options.scales.x.grid.borderColor = getStyle(
-            '--cui-border-color-translucent',
-          )
-          chartRef.current.options.scales.x.grid.color = getStyle('--cui-border-color-translucent')
-          chartRef.current.options.scales.x.ticks.color = getStyle('--cui-body-color')
-          chartRef.current.options.scales.y.grid.borderColor = getStyle(
-            '--cui-border-color-translucent',
-          )
-          chartRef.current.options.scales.y.grid.color = getStyle('--cui-border-color-translucent')
-          chartRef.current.options.scales.y.ticks.color = getStyle('--cui-body-color')
-          chartRef.current.update()
-        })
-      }
-    })
-  }, [chartRef])
-
-  const random = () => Math.round(Math.random() * 100)
-
-  return (
-    <>
-      <CChartLine
-        ref={chartRef}
-        style={{ height: '300px', marginTop: '40px' }}
-        data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    // Fetching data from the endpoints
+    const fetchData = async () => {
+      try {
+        const usersResponse = await fetch('http://localhost:9999/users');
+        const examsResponse = await fetch('http://localhost:9999/exams');
+        const users = await usersResponse.json();
+        const exams = await examsResponse.json();
+        
+        // Process users data
+        const approvedUsers = users.filter(user => user.status).length;
+        const pendingUsers = users.filter(user => !user.status).length;
+        
+        // Process exams data
+        const currentDate = new Date();
+        const ongoingExams = exams.filter(exam => new Date(exam.time_end) >= currentDate).length;
+        const expiredExams = exams.filter(exam => new Date(exam.time_end) < currentDate).length;
+        
+        // Update chart data
+        setChartData({
+          labels: ['Đã phê duyệt', 'Chưa phê duyệt'],
           datasets: [
             {
-              label: 'My First dataset',
-              backgroundColor: `rgba(${getStyle('--cui-info-rgb')}, .1)`,
-              borderColor: getStyle('--cui-info'),
-              pointHoverBackgroundColor: getStyle('--cui-info'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-              fill: true,
-            },
-            {
-              label: 'My Second dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-success'),
-              pointHoverBackgroundColor: getStyle('--cui-success'),
-              borderWidth: 2,
-              data: [
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-                random(50, 200),
-              ],
-            },
-            {
-              label: 'My Third dataset',
-              backgroundColor: 'transparent',
-              borderColor: getStyle('--cui-danger'),
-              pointHoverBackgroundColor: getStyle('--cui-danger'),
-              borderWidth: 1,
-              borderDash: [8, 5],
-              data: [65, 65, 65, 65, 65, 65, 65],
+              label: 'Members',
+              backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+              borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+              data: [approvedUsers, pendingUsers],
             },
           ],
-        }}
-        options={{
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-          },
-          scales: {
-            x: {
-              grid: {
-                color: getStyle('--cui-border-color-translucent'),
-                drawOnChartArea: false,
-              },
-              ticks: {
-                color: getStyle('--cui-body-color'),
-              },
-            },
-            y: {
-              beginAtZero: true,
-              border: {
-                color: getStyle('--cui-border-color-translucent'),
-              },
-              grid: {
-                color: getStyle('--cui-border-color-translucent'),
-              },
-              max: 250,
-              ticks: {
-                color: getStyle('--cui-body-color'),
-                maxTicksLimit: 5,
-                stepSize: Math.ceil(250 / 5),
-              },
-            },
-          },
-          elements: {
-            line: {
-              tension: 0.4,
-            },
-            point: {
-              radius: 0,
-              hitRadius: 10,
-              hoverRadius: 4,
-              hoverBorderWidth: 3,
-            },
-          },
-        }}
-      />
-    </>
-  )
-}
+        });
 
-export default MainChart
+        setCompletionChartData({
+          labels: ['Đang thực hiện', 'Đã hết hạn'],
+          datasets: [
+            {
+              label: 'Exams',
+              backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+              borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+              data: [ongoingExams, expiredExams],
+            },
+          ],
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const chartOptions = {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+      },
+    },
+  };
+
+  return (
+    <div className="chart-section">
+      <div className="chart-container">
+        {chartLoaded && <Pie data={chartData} options={chartOptions} />}
+        <h1>Thống kê tài khoản</h1>
+      </div>
+      <div style={{ marginTop: '30px' }} className="chart-container">
+        {chartLoaded && <Pie data={completionChartData} options={chartOptions} />}
+        <h1>Thống kê bài thi</h1>
+      </div>
+    </div>
+  );
+};
+
+export default StatisticsChart;
