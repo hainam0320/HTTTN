@@ -81,7 +81,9 @@ const AddQuestion = () => {
 
     const addQuestion = async () => {
         try {
-            const lastQuestionId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) : 0;
+            const responseQuestions = await axios.get(`http://localhost:9999/questions`);
+            const questionCount = responseQuestions.data;
+            const lastQuestionId = questionCount.length > 0 ? Math.max(...questionCount.map(q => q.id)) : 0;
             const newQuestionId = (lastQuestionId + 1).toString();
             const questionToAdd = {
                 ...newQuestion,

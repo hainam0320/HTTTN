@@ -43,7 +43,7 @@ const AddExam = () => {
                 const maxId = exams.length > 0 ? Math.max(...exams.map(exam => exam.id)) : 0;
                 const newExam = {
                     ...exam,
-                    id: maxId + 1
+                    id: (maxId + 1).toString(),
                 };
 
                 await axios.post('http://localhost:9999/exams', newExam);

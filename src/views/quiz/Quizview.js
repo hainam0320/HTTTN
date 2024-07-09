@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Button, Card, ListGroup, Form } from 'react-bootstrap';
+import { Container, Col, Button, Card, ListGroup, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { CCallout } from '@coreui/react';
 
@@ -10,24 +10,19 @@ const QuizView = () => {
   const [timeLeft, setTimeLeft] = useState(0); // Initialize to 0, will set from API
   const [userAnswers, setUserAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const { id } = useParams();
   const [correctPercentage, setCorrectPercentage] = useState(0);
+  const [timeUp, setTimeUp] = useState(false); // State to track if time is up
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch questions for the specific test id
         const response = await axios.get(`http://localhost:9999/questions?test_id=${id}`);
         const data = response.data;
-
-        // Filter questions based on the test id
         const questions = data.filter(question => question.test_id === id);
-        
-        // Assuming the exam information is also fetched from the same endpoint or another
         const examResponse = await axios.get(`http://localhost:9999/exams/${id}`);
         const examData = examResponse.data;
         
-        // Set state with questions and exam details
         setQuestionList(questions);
         setTimeLeft(examData.time_work * 60); 
         setName(examData.name);
@@ -40,7 +35,16 @@ const QuizView = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft(prevTime => {
+        if (prevTime > 0) {
+          return prevTime - 1;
+        } else {
+          clearInterval(timer);
+          setTimeUp(true); 
+          handleSubmit(); 
+          return 0;
+        }
+      });
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -61,8 +65,7 @@ const QuizView = () => {
       }
     });
     const percentage = (correctAnswersCount / questionList.length) * 100;
-    setCorrectPercentage(percentage.toFixed(2)); // Round to 2 decimal places
-    // Here you can also send userAnswers to the server if needed
+    setCorrectPercentage(percentage.toFixed(2)); 
   };
 
   const formatTime = (time) => {
@@ -79,7 +82,7 @@ const QuizView = () => {
     <Container fluid className="border bg-white psr">
       <h3 className="text-center mt-2 text-uppercase">BÀI THI {name}</h3>
       <hr />
-      {!submitted && (
+      {!submitted && !timeUp && (
         <div className="text-center mb-3">
           <h4>Thời gian còn lại: {formatTime(timeLeft)}</h4>
         </div>
@@ -98,7 +101,7 @@ const QuizView = () => {
                       name={`${question.id}-answers`}
                       label={choice.content}
                       value={choice.id}
-                      disabled={submitted}
+                      disabled={submitted || timeUp} 
                       checked={userAnswers[question.id] === choice.id}
                       onChange={() => handleAnswerChange(question.id, choice.id)}
                     />
@@ -109,7 +112,7 @@ const QuizView = () => {
           </CCallout>
         </Col>
       ))}
-      {!submitted && (
+      {!submitted && !timeUp && (
         <Col xs="12" className="text-center mb-2">
           <Button variant="primary" className="mt-3" onClick={handleSubmit}>Nộp bài</Button>
         </Col>
@@ -119,7 +122,7 @@ const QuizView = () => {
           <h4>Kết quả bài thi:</h4>
           <h5>Phần trăm câu đúng: {correctPercentage}%</h5>
           {questionList.map((question, index) => (
-            <CCallout  color={index % 2 === 0 ? 'success' : 'info'} text="white" className="mb-3" key={question.id}>
+            <CCallout color={index % 2 === 0 ? 'success' : 'info'} text="white" className="mb-3" key={question.id}>
               <Card.Body>
                 <Card.Title><b>{`Câu ${index + 1}: ${question.name}`}</b></Card.Title>
                 <ListGroup>

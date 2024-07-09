@@ -24,15 +24,19 @@ import {
     CModalBody,
     CModalFooter,
     CFormInput,
-    CTooltip
+    CTooltip,
+    CPagination,
+    CPaginationItem
 } from '@coreui/react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AddMemberModal from './add-member/AddMemberModal';
 import DetailTestPage from './DetailTestPage';
 import QuizView from '../quiz/Quizview';
+
 const getLoggedInUserId = () => {
-    return localStorage.getItem('loggedInUserId'); 
+    return localStorage.getItem('loggedInUserId');
 };
+
 const TestList = () => {
     const [tabPaneActiveKey, setTabPaneActiveKey] = useState(1);
     const [lstTestUser, setLstTestUser] = useState([]);
@@ -42,15 +46,14 @@ const TestList = () => {
     const [currentTest, setCurrentTest] = useState(null);
     const [modalDeleteTest, setModalDeleteTest] = useState(false);
     const [currentTestId, setCurrentTestId] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
     const [selectedUsers, setSelectedUsers] = useState([]);
-    const totalPages = 5;
     const navigate = useNavigate();
     const location = useLocation();
     const userId = getLoggedInUserId();
-    const [loggedInUserId, setLoggedInUserId] = useState("1"); // Giả sử ID của người dùng đang đăng nhập là "1"
-    const [userExams, setUserExams] = useState([]);
     const [matchedExams, setMatchedExams] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // New state for current page
+    const itemsPerPage = 5; // Number of items per page
+
     const changeTab = (key) => {
         setTabPaneActiveKey(key);
         // Navigate to the corresponding path when clicking on tabs
@@ -58,30 +61,6 @@ const TestList = () => {
             navigate('/test'); // Path for tab 1
         } else if (key === 2) {
             navigate('/my-tests'); // Path for tab 2
-        }
-    };
-
-    const addMembersToTest = async () => {
-        try {
-            const userIds = selectedUsers.map(user => user.value);
-            await axios.post('http://localhost:9999/user_exam', {
-                id_user: userIds,
-                id_exam: currentTestId
-            });
-            closeModal(); // Đóng modal sau khi thêm thành viên thành công
-            // Cập nhật lại danh sách bài thi (lstTestUser) sau khi thêm thành viên
-            const updatedTests = lstTestUser.map(test => {
-                if (test.id === currentTestId) {
-                    return {
-                        ...test,
-                        // Có thể cập nhật thêm thông tin nếu cần thiết
-                    };
-                }
-                return test;
-            });
-            setLstTestUser(updatedTests);
-        } catch (error) {
-            console.error('Error adding members to test:', error);
         }
     };
 
@@ -98,10 +77,10 @@ const TestList = () => {
                         if (item.id_user.includes(userId)) {
                             matched.push(itemExam);
                         }
-                      }); 
+                    });
                 }
                 setMatchedExams(matched);
-                console.log("Bài thi:",matched);
+                console.log("Bài thi:", matched);
             } catch (error) {
                 console.error('Error fetching test data:', error);
             }
@@ -142,6 +121,11 @@ const TestList = () => {
 
     const deleteTest = async () => {
         try {
+            const response = await axios.get(`http://localhost:9999/questions?test_id=${currentTestId}`);
+            const questionsToDelete = response.data;
+            await Promise.all(questionsToDelete.map(async (question) => {
+                await axios.delete(`http://localhost:9999/questions/${question.id}`);
+            }));
             await axios.delete(`http://localhost:9999/exams/${currentTestId}`);
             setLstTestUser(lstTestUser.filter(test => test.id !== currentTestId));
             setModalDeleteTest(false);
@@ -150,26 +134,21 @@ const TestList = () => {
         }
     };
 
-    const prevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    const handleSearch = () => {
+        let filtered = lstTestUser;
+        if (searchKeyword) {
+            filtered = lstTestUser.filter(test =>
+                test.name.toLowerCase().includes(searchKeyword.toLowerCase())
+            );
+        }
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return filtered.slice(startIndex, endIndex);
     };
 
-    const nextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
+    const filteredTests = handleSearch();
 
-    const changePage = (page) => {
-        setCurrentPage(page);
-    };
-
-    const filteredMyTests = myTests.filter((test) =>
-        test.name.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
-
-    const paginatedMyTests = filteredMyTests.slice(
-        (currentPage - 1) * 10,
-        currentPage * 10
-    ); // Adjust pagination logic as per your requirements
+    const totalPages = Math.ceil(lstTestUser.length / itemsPerPage);
 
     return (
         <div>
@@ -259,23 +238,14 @@ const TestList = () => {
                     <CContainer className="bg-white mb-3 custom-borders" fluid>
                         <h3 className="text-center pt-3">DANH SÁCH BÀI THI CỦA TÔI</h3>
                         <hr />
-                        <CRow className="align-items-end justify-content-end">
+                        <CRow className="mt-4">
                             <CCol xs="12" md="4">
                                 <label className="mb-1">Tên bài thi</label>
                                 <CFormInput
-                                    value={searchKeyword}
-                                    onChange={(e) => setSearchKeyword(e.target.value)}
+                                    value={searchKeyword} // Bind value to state
+                                    onChange={(e) => setSearchKeyword(e.target.value)} // Handle change
                                     placeholder="Nhập tên bài thi"
                                 />
-                            </CCol>
-                            <CCol xs="12" md="4">
-                                <label className="mb-1">Tên người tạo</label>
-                                <CFormInput placeholder="Nhập tên người tạo bài" />
-                            </CCol>
-                            <CCol xs="12" md="4" className="mt-md-0">
-                                <div className="d-flex justify-content-center">
-                                    <CButton color="primary" >Tìm kiếm</CButton>
-                                </div>
                             </CCol>
                         </CRow>
                         <CRow className="mt-4">
@@ -303,9 +273,9 @@ const TestList = () => {
                                     </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
-                                    {lstTestUser.map((test, index) => (
+                                    {filteredTests.map((test, index) => (
                                         <CTableRow key={test.id} className="text-center">
-                                            <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                                            <CTableHeaderCell scope="row">{(currentPage - 1) * itemsPerPage + index + 1}</CTableHeaderCell>
                                             <CTableDataCell className="text-left">{test.name}</CTableDataCell>
                                             <CTableDataCell>{test.count_question}</CTableDataCell>
                                             <CTableDataCell>{test.time_work} phút</CTableDataCell>
@@ -363,41 +333,30 @@ const TestList = () => {
                                 </CTableBody>
                             </CTable>
                         </div>
-                        {/* Pagination */}
-                        <CRow>
-                            <CCol xs="12">
-                                <ul className="pagination justify-content-center">
-                                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                        <button
-                                            className="page-link"
-                                            onClick={prevPage}
-                                            disabled={currentPage === 1}
-                                        >
-                                            Trước
-                                        </button>
-                                    </li>
-                                    {Array.from({ length: totalPages }, (_, index) => (
-                                        <li key={index + 1} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                                            <button
-                                                className="page-link"
-                                                onClick={() => changePage(index + 1)}
-                                            >
-                                                {index + 1}
-                                            </button>
-                                        </li>
-                                    ))}
-                                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                        <button
-                                            className="page-link"
-                                            onClick={nextPage}
-                                            disabled={currentPage === totalPages}
-                                        >
-                                            Tiếp
-                                        </button>
-                                    </li>
-                                </ul>
-                            </CCol>
-                        </CRow>
+                        {/* Pagination Controls */}
+                        <CPagination align="end" className="mt-3">
+                            <CPaginationItem
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(currentPage - 1)}
+                            >
+                                Previous
+                            </CPaginationItem>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <CPaginationItem
+                                    key={i + 1}
+                                    active={currentPage === i + 1}
+                                    onClick={() => setCurrentPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </CPaginationItem>
+                            ))}
+                            <CPaginationItem
+                                disabled={currentPage === totalPages}
+                                onClick={() => setCurrentPage(currentPage + 1)}
+                            >
+                                Next
+                            </CPaginationItem>
+                        </CPagination>
                     </CContainer>
                     {/* Ensure the modal is rendered only when currentTest is set */}
                     {currentTest && (
