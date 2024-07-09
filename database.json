@@ -84,19 +84,17 @@
   ],
   "exams": [
     {
-      "id": "1",
       "name": "Hai Nam",
-      "id_user": "1",
-      "count_question": 2,
-      "time_work": "60",
+      "count_question": 1,
+      "time_work": "1",
       "time_start": "2024-06-21",
-      "time_end": "2024-06-22"
+      "time_end": "2024-07-31",
+      "id": "1"
     },
     {
       "name": "Hai Nam Idol",
-      "count_question": 5,
-      "id_user": "1",
-      "time_work": "120",
+      "count_question": 4,
+      "time_work": "12",
       "time_start": "2024-06-21",
       "time_end": "2024-07-06",
       "id": "2"
@@ -105,28 +103,10 @@
       "id": "3",
       "id_user": "1",
       "name": "Hai Nam3",
-      "count_question": 3,
+      "count_question": 2,
       "time_work": "90",
       "time_start": "2024-06-21",
       "time_end": "2024-06-23"
-    },
-    {
-      "id": "4",
-      "id_user": "1",
-      "name": "Hai Nam4",
-      "count_question": 1,
-      "time_work": "100",
-      "time_start": "2024-06-21",
-      "time_end": "2024-06-26"
-    },
-    {
-      "id": "5",
-      "id_user": "2",
-      "name": "uuuu",
-      "count_question": 3,
-      "time_work": "23",
-      "time_start": "2024-06-24",
-      "time_end": "2024-06-27"
     }
   ],
   "user_exam": [
@@ -156,111 +136,18 @@
         "5"
       ],
       "id_exam": "3"
+    },
+    {
+      "id": "c90c",
+      "id_user": [
+        "1"
+      ],
+      "id_exam": 6
     }
   ],
   "questions": [
     {
-      "id": "1",
-      "test_id": "5",
-      "name": "What is the largest ocean on Earth?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "Atlantic Ocean"
-        },
-        {
-          "id": "B",
-          "content": "Indian Ocean"
-        },
-        {
-          "id": "C",
-          "content": "Arctic Ocean"
-        },
-        {
-          "id": "D",
-          "content": "Pacific Ocean"
-        }
-      ],
-      "correct_choice_id": "D"
-    },
-    {
-      "id": "2",
-      "test_id": "5",
-      "name": "Who developed the theory of relativity?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "Isaac Newton"
-        },
-        {
-          "id": "B",
-          "content": "Albert Einstein"
-        },
-        {
-          "id": "C",
-          "content": "Galileo Galilei"
-        },
-        {
-          "id": "D",
-          "content": "Nikola Tesla"
-        }
-      ],
-      "correct_choice_id": "B"
-    },
-    {
-      "id": "3",
-      "test_id": "6",
-      "name": "What is the chemical symbol for gold?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "Au"
-        },
-        {
-          "id": "B",
-          "content": "Ag"
-        },
-        {
-          "id": "C",
-          "content": "Fe"
-        },
-        {
-          "id": "D",
-          "content": "Cu"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
-      "id": "4",
-      "test_id": "6",
-      "name": "Which country is the largest producer of coffee in the world?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "Brazil"
-        },
-        {
-          "id": "B",
-          "content": "Vietnam"
-        },
-        {
-          "id": "C",
-          "content": "Colombia"
-        },
-        {
-          "id": "D",
-          "content": "Indonesia"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
-      "id": "6",
+      "id": "5",
       "test_id": "2",
       "name": "What is the largest planet in our solar system?",
       "file": "",
@@ -285,7 +172,7 @@
       "correct_choice_id": "B"
     },
     {
-      "id": "7",
+      "id": "6",
       "test_id": "2",
       "name": "Which scientist proposed the theory of evolution?",
       "file": "",
@@ -310,7 +197,7 @@
       "correct_choice_id": "C"
     },
     {
-      "id": "8",
+      "id": "7",
       "test_id": "3",
       "name": "What is the hottest planet in our solar system?",
       "file": "",
@@ -335,109 +222,9 @@
       "correct_choice_id": "A"
     },
     {
-      "id": "10",
-      "test_id": "2",
-      "name": "Who wrote 'To Kill a Mockingbird'?",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "Harper Lee"
-        },
-        {
-          "id": "B",
-          "content": "John Steinbeck"
-        },
-        {
-          "id": "C",
-          "content": "F. Scott Fitzgerald"
-        },
-        {
-          "id": "D",
-          "content": "Ernest Hemingway"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
-      "id": "11",
-      "test_id": "2",
-      "name": "Nguyễn Cảnh Thăng",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "1"
-        },
-        {
-          "id": "B",
-          "content": "2"
-        },
-        {
-          "id": "C",
-          "content": "3"
-        },
-        {
-          "id": "D",
-          "content": "4"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
-      "id": "12",
-      "test_id": "2",
-      "name": "Nguyễn Cảnh Thăng 111",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "1"
-        },
-        {
-          "id": "B",
-          "content": "2"
-        },
-        {
-          "id": "C",
-          "content": "3"
-        },
-        {
-          "id": "D",
-          "content": "4"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
-      "id": "1",
+      "id": "8",
       "test_id": "1",
-      "name": "Nguyễn Cảnh Thăng 12",
-      "file": "",
-      "choices": [
-        {
-          "id": "A",
-          "content": "1"
-        },
-        {
-          "id": "B",
-          "content": "2"
-        },
-        {
-          "id": "C",
-          "content": "3"
-        },
-        {
-          "id": "D",
-          "content": "4"
-        }
-      ],
-      "correct_choice_id": "A"
-    },
-    {
-      "id": "2",
-      "test_id": "1",
-      "name": "Nguyễn Cảnh Thăng 123",
+      "name": "tieng anh12",
       "file": "",
       "choices": [
         {
@@ -461,25 +248,25 @@
     },
     {
       "id": "9",
-      "test_id": "3",
-      "name": "Nguyễn Cảnh Thăng 1234",
+      "test_id": "1",
+      "name": "What is the capital of France?",
       "file": "",
       "choices": [
         {
           "id": "A",
-          "content": "1"
+          "content": "Paris"
         },
         {
           "id": "B",
-          "content": "2"
+          "content": "London"
         },
         {
           "id": "C",
-          "content": "3"
+          "content": "Berlin"
         },
         {
           "id": "D",
-          "content": "4"
+          "content": "Rome"
         }
       ],
       "correct_choice_id": "A"
@@ -487,77 +274,177 @@
     {
       "id": "10",
       "test_id": "3",
-      "name": "Nguyễn Cảnh Thăng 12345",
+      "name": "Who painted the Mona Lisa?",
       "file": "",
       "choices": [
         {
           "id": "A",
-          "content": "1"
+          "content": "Leonardo da Vinci"
         },
         {
           "id": "B",
-          "content": "2"
+          "content": "Pablo Picasso"
         },
         {
           "id": "C",
-          "content": "3"
+          "content": "Vincent van Gogh"
         },
         {
           "id": "D",
-          "content": "4"
+          "content": "Michelangelo"
         }
       ],
       "correct_choice_id": "A"
     },
     {
-      "id": "1",
-      "test_id": "4",
-      "name": "uuuu",
+      "id": "11",
+      "test_id": "2",
+      "name": "Who wrote the play 'Romeo and Juliet'?",
       "file": "",
       "choices": [
         {
           "id": "A",
-          "content": "1"
+          "content": "William Shakespeare"
         },
         {
           "id": "B",
-          "content": "2"
+          "content": "Charles Dickens"
         },
         {
           "id": "C",
-          "content": "3"
+          "content": "Jane Austen"
         },
         {
           "id": "D",
-          "content": "4"
+          "content": "Mark Twain"
         }
       ],
       "correct_choice_id": "A"
     },
     {
-      "id": "3",
-      "test_id": "5",
-      "name": "Hai Nam",
+      "id": "12",
+      "test_id": "3",
+      "name": "Which planet is known as the Red Planet?",
       "file": "",
       "choices": [
         {
           "id": "A",
-          "content": "1"
+          "content": "Mars"
         },
         {
           "id": "B",
-          "content": "2"
+          "content": "Jupiter"
         },
         {
           "id": "C",
-          "content": "3"
+          "content": "Mercury"
         },
         {
           "id": "D",
-          "content": "4"
+          "content": "Saturn"
         }
       ],
       "correct_choice_id": "A"
+    },
+    {
+      "id": "13",
+      "test_id": "1",
+      "name": "Which planet is known as the 'Morning Star' or 'Evening Star'?",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "Mars"
+        },
+        {
+          "id": "B",
+          "content": "Venus"
+        },
+        {
+          "id": "C",
+          "content": "Mercury"
+        },
+        {
+          "id": "D",
+          "content": "Jupiter"
+        }
+      ],
+      "correct_choice_id": "B"
+    },
+    {
+      "id": "14",
+      "test_id": "2",
+      "name": "What is the chemical symbol for the element Oxygen?",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "O"
+        },
+        {
+          "id": "B",
+          "content": "O2"
+        },
+        {
+          "id": "C",
+          "content": "H2O"
+        },
+        {
+          "id": "D",
+          "content": "C"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "15",
+      "test_id": "3",
+      "name": "Who was the first human to step on the Moon?",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "Neil Armstrong"
+        },
+        {
+          "id": "B",
+          "content": "Buzz Aldrin"
+        },
+        {
+          "id": "C",
+          "content": "Michael Collins"
+        },
+        {
+          "id": "D",
+          "content": "Yuri Gagarin"
+        }
+      ],
+      "correct_choice_id": "A"
+    },
+    {
+      "id": "16",
+      "test_id": "1",
+      "name": "What is the largest moon in the Solar System?",
+      "file": "",
+      "choices": [
+        {
+          "id": "A",
+          "content": "Titan"
+        },
+        {
+          "id": "B",
+          "content": "Europa"
+        },
+        {
+          "id": "C",
+          "content": "Ganymede"
+        },
+        {
+          "id": "D",
+          "content": "Callisto"
+        }
+      ],
+      "correct_choice_id": "C"
     }
   ],
   "user_anwser": [
