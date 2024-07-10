@@ -12,6 +12,7 @@ import AddQuestion from '../views/manage-question/AddQuestion';
 import UserProfile from '../views/pages/Profile';
 import ChangePassword from '../views/pages/ChangePassword';
 import StatisticsChart from '../views/dashboard/MainChart';
+import UserHistoryPage from '../views/quiz/UserHistory';
 const DefaultLayout = ({ handleLogout }) => {
   return (
     <div>
@@ -32,7 +33,7 @@ const DefaultLayout = ({ handleLogout }) => {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/statistic" element={<StatisticsChart />} />
-
+            <Route path="/user-history" element={<UserHistoryPage />} />
           </Routes>
         </div>
         <AppFooter />
