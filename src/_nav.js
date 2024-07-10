@@ -2,6 +2,7 @@ import React from 'react';
 import CIcon from '@coreui/icons-react';
 import {
   cilDrop,
+  cilHistory,
   cilPencil,
   cilSpeedometer,
   cilStar,
@@ -37,10 +38,16 @@ const _nav = [
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'History test',
+    to: '/user-history',
+    icon: <CIcon icon={cilHistory} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: 'Report',
   },
-  {
+  userId === '1'&& {
     component: CNavGroup,
     name: 'Statistic',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,

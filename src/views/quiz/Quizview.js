@@ -7,12 +7,13 @@ import { CCallout } from '@coreui/react';
 const QuizView = () => {
   const [name, setName] = useState('');
   const [questionList, setQuestionList] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(0); // Initialize to 0, will set from API
+  const [timeLeft, setTimeLeft] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [correctPercentage, setCorrectPercentage] = useState(0);
-  const [timeUp, setTimeUp] = useState(false); // State to track if time is up
+  const [timeUp, setTimeUp] = useState(false);
   const { id } = useParams();
+  const userId = localStorage.getItem('loggedInUserId'); // Lấy userId từ localStorage
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,9 +21,10 @@ const QuizView = () => {
         const response = await axios.get(`http://localhost:9999/questions?test_id=${id}`);
         const data = response.data;
         const questions = data.filter(question => question.test_id === id);
+
         const examResponse = await axios.get(`http://localhost:9999/exams/${id}`);
         const examData = examResponse.data;
-        
+
         setQuestionList(questions);
         setTimeLeft(examData.time_work * 60); 
         setName(examData.name);
@@ -40,8 +42,8 @@ const QuizView = () => {
           return prevTime - 1;
         } else {
           clearInterval(timer);
-          setTimeUp(true); 
-          handleSubmit(); 
+          setTimeUp(true);
+          handleSubmit();
           return 0;
         }
       });
@@ -56,7 +58,7 @@ const QuizView = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitted(true);
     let correctAnswersCount = 0;
     questionList.forEach(question => {
@@ -65,7 +67,20 @@ const QuizView = () => {
       }
     });
     const percentage = (correctAnswersCount / questionList.length) * 100;
-    setCorrectPercentage(percentage.toFixed(2)); 
+    setCorrectPercentage(percentage.toFixed(2));
+
+    try {
+      const response = await axios.post('http://localhost:9999/user_result', {
+        test_id: id,
+        user_id: userId, // Sử dụng userId từ localStorage
+        test_name: name, // Thêm tên bài thi
+        time_test: new Date().toISOString(), // Lưu thời gian khi nộp bài
+        result: parseFloat(percentage.toFixed(2)),
+      });
+      console.log('Saved user result:', response.data);
+    } catch (error) {
+      console.error('Error saving user result:', error);
+    }
   };
 
   const formatTime = (time) => {
@@ -101,7 +116,7 @@ const QuizView = () => {
                       name={`${question.id}-answers`}
                       label={choice.content}
                       value={choice.id}
-                      disabled={submitted || timeUp} 
+                      disabled={submitted || timeUp}
                       checked={userAnswers[question.id] === choice.id}
                       onChange={() => handleAnswerChange(question.id, choice.id)}
                     />
@@ -141,9 +156,9 @@ const QuizView = () => {
                   ))}
                 </ListGroup>
                 {userAnswers[question.id] === question.correct_choice_id ? (
-                  <div className=" text-success">Correct</div>
+                  <div className=" text-success">Đúng</div>
                 ) : (
-                  <div className=" text-danger">Incorrect</div>
+                  <div className=" text-danger">Sai</div>
                 )}
               </Card.Body>
             </CCallout>

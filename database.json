@@ -96,7 +96,7 @@
       "count_question": 4,
       "time_work": "12",
       "time_start": "2024-06-21",
-      "time_end": "2024-07-06",
+      "time_end": "2024-07-27",
       "id": "2"
     },
     {
@@ -454,6 +454,56 @@
       "user_id": "1",
       "question_id": "1",
       "choice_id": "A"
+    }
+  ],
+  "user_result": [
+    {
+      "id": "8e08",
+      "test_name": "Hai Nam",
+      "test_id": "1",
+      "user_id": "1",
+      "time_test": "2024-07-10T01:48:22.439Z",
+      "result": 70
+    },
+    {
+      "id": "6637",
+      "test_id": "1",
+      "user_id": "1",
+      "test_name": "Hai Nam",
+      "time_test": "2024-07-10T02:27:39.400Z",
+      "result": 90
+    },
+    {
+      "id": "4e94",
+      "test_id": "2",
+      "user_id": "1",
+      "test_name": "Hai Nam Idol",
+      "time_test": "2024-07-10T02:28:21.496Z",
+      "result": 50
+    },
+    {
+      "id": "e882",
+      "test_id": "1",
+      "user_id": "2",
+      "test_name": "Hai Nam",
+      "time_test": "2024-07-10T02:54:48.977Z",
+      "result": 75
+    },
+    {
+      "id": "d4c3",
+      "test_id": "2",
+      "user_id": "1",
+      "test_name": "Hai Nam Idol",
+      "time_test": "2024-07-10T04:11:40.027Z",
+      "result": 25
+    },
+    {
+      "id": "c781",
+      "test_id": "2",
+      "user_id": "1",
+      "test_name": "Hai Nam Idol",
+      "time_test": "2024-07-10T04:11:53.242Z",
+      "result": 25
     }
   ]
 }
