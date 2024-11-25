@@ -191,7 +191,6 @@ const AddQuestion = () => {
             <CModal
                 visible={isModalVisible}
                 onClose={() => setIsModalVisible(false)}
-                size="lg"
             >
                 <CModalHeader closeButton>
                     <CModalTitle>Thêm Câu Hỏi Mới</CModalTitle>
